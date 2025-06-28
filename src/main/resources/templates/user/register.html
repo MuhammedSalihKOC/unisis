@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head><title layout:title-pattern="Okul Kaydı - UNISIS">UNISIS</title></head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+    <div class="login-register-container">
+        <h2>Okul Kaydı</h2>
+        <form action="/user/register" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="name" class="form-label">Ad Soyad</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="readonlyEmail" class="form-label">Seçilen E-Posta</label>
+                <input type="text" id="readonlyEmail" class="form-control" placeholder="E-Posta Öner butonuna basınız"
+                       readonly required>
+                <input type="hidden" name="email" id="selectedEmail">
+            </div>
+
+            <small>
+                <div class="mb-3 d-none" id="emailSuggestionsContainer">
+                    <p class="text-muted">Aşağıdan e-posta adresi seçiniz:</p>
+                    <div id="emailSuggestions" class="d-flex flex-wrap gap-2"></div>
+                </div>
+            </small>
+
+            <div class="mb-3">
+                <button type="button" class="btn btn-outline-primary" id="generateEmailBtn">E-Posta Öner</button>
+            </div>
+            <div id="nameWarning" class="alert alert-warning mt-2" style="opacity: 0; display: none; transition: opacity 0.6s ease;">
+                ⚠️ Lütfen ad ve soyad giriniz. E-posta önerileri için bu bilgi gereklidir.
+            </div>
+
+
+            <div class="mb-3">
+                <label for="school_number" class="form-label">TC Kimlik Numarası</label>
+                <small class="form-text mt-1" style="font-size: 0.85rem;">
+                    ⚠️ Okul numaranız, TC Kimlik numaranız olarak kaydedilecektir.
+                </small>
+                <input type="text" class="form-control" id="school_number" name="school_number" maxlength="11"
+                       pattern="^\d{11}$" required>
+            </div>
+
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Şifre</label>
+                <small class="form-text d-block text-start mt-1" style="font-size: 0.85rem;">
+                    ⚠️ Şifreniz en az 12 karakterli olmalı ve en az 1 büyük harf, 1 küçük harf, 1 rakam ve 1 özel
+                    karakter içermelidir.
+                </small>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password_confirm" class="form-label">Şifre Tekrar</label>
+                <input type="password" class="form-control" id="password_confirm" name="password_confirm" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="number" class="form-label">Telefon Numarası</label>
+                <input type="text"
+                       class="form-control"
+                       id="number"
+                       name="number"
+                       maxlength="17"
+                       required
+                       placeholder="0 (5__) ___ __ __">
+            </div>
+
+
+            <div class="mb-3">
+                <label for="estu_department" class="form-label">Bölüm</label>
+                <input type="text" class="form-control" id="estu_department" name="estu_department" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="receipt" class="form-label">YKS Tercih Sonuç Belgesi</label>
+                <input type="file" class="form-control" name="receipt" id="receipt"
+                       accept="image/*,application/pdf">
+            </div>
+
+            <button type="submit" class="btn btn-danger w-100">Okul Kaydını Tamamla</button>
+        </form>
+    </div>
+</div>
+<script src="/uploads/js/main.js"></script>
+</body>
+</html>

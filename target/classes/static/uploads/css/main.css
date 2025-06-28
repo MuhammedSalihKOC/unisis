@@ -1,3 +1,6 @@
+body {
+  font-family: "Nunito Sans", sans-serif !important;
+}
 .bg-bordo {
     background-color: #8C373E;
 }
@@ -10,11 +13,90 @@
   height: 75px;
   z-index: 9999;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: white;
 }
 nav:first-child {
-  font-family: "Nunito Sans", sans-serif !important;
   font-weight: bold !important;
 }
 a {
   text-decoration: none !important;
+}
+.navbar .nav-link,
+.navbar  .navbar-brand {
+  color: #fff !important;
+}
+.navbar .nav-link:hover {
+  color: #fff !important;
+  opacity: 0.85;
+}
+.login-register-container {
+  max-width: 450px;
+  margin: 80px auto;
+  padding: 40px 30px;
+  background: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+.login-register-container h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 25px;
+}
+.login-register-container label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+  text-align: left;
+}
+
+.login-register-container input {
+  border-radius: 0.75rem;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+.login-register-container button[type="submit"] {
+  padding: 14px 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #d90429, #e63946);
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+  transition: all 0.3s ease-in-out;
+}
+.login-register-container button[type="submit"]:hover {
+  background: linear-gradient(135deg, #e63946, #d90429);
+  transform: scale(1.03);
+  box-shadow: 0 6px 25px rgba(233, 30, 99, 0.6);
+}
+
+.login-register-container a {
+  display: block;
+  margin-top: 15px;
+  color: #007bff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.email-suggestion {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+.email-suggestion:hover {
+  background-color: #e2e6ea;
+}
+.email-suggestion.selected {
+  background-color: #d0ebff;
+  border-color: #74c0fc;
+  font-weight: 600;
 }
