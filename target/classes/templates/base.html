@@ -29,6 +29,12 @@
 
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav ms-auto">
+
+                <!-- Oturum açılmışsa profil -->
+                <li th:if="${session.loggedInUser != null}" class="nav-item">
+                    <a class="nav-link" th:href="@{/profil}">Profil</a>
+                </li>
+
                 <!-- Oturum açılmamışsa giriş ve kayıt -->
                 <li th:if="${session.loggedInUser == null}" class="nav-item">
                     <a class="nav-link" th:href="@{/giris}">Giriş</a>
