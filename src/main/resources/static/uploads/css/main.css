@@ -1,0 +1,68 @@
+body {
+  font-family: "Nunito Sans", sans-serif !important;
+  margin-top: 100px;
+}
+.bg-bordo {
+    background-color: #8C373E;
+}
+.logo {
+  height: 60px;
+  max-width: 200px;
+}
+a {
+  text-decoration: none !important;
+}
+
+.login-container {
+  max-width: 450px;
+  margin: 80px auto;
+  padding: 40px 30px;
+  background: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+.login-container h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 25px;
+}
+.login-container label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+  text-align: left;
+}
+
+.login-container input {
+  border-radius: 0.75rem;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+.login-container button[type="submit"] {
+  padding: 14px 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #d90429, #e63946);
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+  transition: all 1s ease-in-out;
+}
+.login-container button[type="submit"]:hover {
+  background: linear-gradient(135deg, #e63946, #d90429);
+  transform: scale(1.03);
+  box-shadow: 0 6px 25px rgba(233, 30, 99, 0.6);
+}
+
+.login-container a {
+  display: block;
+  margin-top: 15px;
+  color: #007bff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}

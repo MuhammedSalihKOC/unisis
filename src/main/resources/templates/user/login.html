@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head><title layout:title-pattern="Giriş Yap - UNISIS">UNISIS</title></head>
+<body>
+<div class="container mt-5" layout:fragment="content">
+    <div class="login-container">
+        <h2 class="mb-4">Admin Girişi</h2>
+
+        <div th:if="${message != null}"
+             class="alert alert-dismissible fade show mt-3"
+             th:classappend="
+     ${messageType} == 'success' ? ' alert-success' :
+     (${messageType} == 'warning' ? ' alert-warning' : ' alert-danger')"
+             role="alert">
+            <span th:text="${message}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <form action="/user/login" method="POST">
+            <div class="mb-3 text-start">
+                <label for="identifier" class="form-label">Admin E-Posta veya Okul Numarası </label>
+                <input type="text" class="form-control" id="identifier" name="identifier" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label for="password" class="form-label">Şifre</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn w-100">Giriş Yap</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
