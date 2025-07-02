@@ -5,6 +5,9 @@ body {
 .bg-bordo {
     background-color: #8C373E;
 }
+.bg-bordo2{
+    background-color: #883434;
+}
 .logo {
   height: 60px;
   max-width: 200px;
@@ -13,6 +16,60 @@ a {
   text-decoration: none !important;
 }
 
+aside.sidebar * {
+    color: #fff !important;
+}
+aside.sidebar .logo {
+    height: 50px;
+}
+
+aside.sidebar .nav .nav-item .nav-link {
+    padding: 12px 17px;
+}
+.nav .nav-item .btn:hover {
+    background-color: #b54545;
+}
+aside.sidebar .nav .nav-item .nav-link:hover {
+    background-color: #b54545;
+}
+
+
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+    margin-left: 307px;
+    padding: 32px;
+}
+.sidebar {
+    height: 100%;
+    width: 304px;
+    background: #883434;
+    color: #fff;
+    position: fixed;
+    padding: 10px 15px;
+    left: 0;
+    top: 50px;
+    overflow-y: auto;
+    transition: left 1s;
+    scrollbar-width: thin;
+    scrollbar-color: #d87a7a #883434;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.12);
+    left: -304px;
+}
+
+.sidebar.show {
+  left: 0;
+}
+#main {
+    transition: margin-left 1s;
+    margin-left: 0;
+}
+#main.shifted {
+  margin-left: 304px;
+}
 .login-container {
   max-width: 450px;
   margin: 80px auto;
@@ -65,4 +122,35 @@ a {
   color: #007bff;
   font-weight: 600;
   font-size: 0.95rem;
+}
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 85vw;
+    max-width: 320px;
+    left: -85vw;
+    top: 0;
+    padding-top: 60px;
+    z-index: 1200;
+    transition: left 0.4s;
+  }
+  .sidebar.show {
+    left: 0;
+  }
+  #main.shifted {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .sidebar {
+    width: 100vw;
+    max-width: 100vw;
+    left: -100vw;
+  }
+  .sidebar.show {
+    left: 0;
+  }
+  #main.shifted {
+    margin-left: 0 !important;
+  }
 }
