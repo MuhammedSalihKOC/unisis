@@ -8,6 +8,9 @@ body {
 .bg-bordo2{
     background-color: #883434;
 }
+.bg-bordo3{
+    #b54545
+}
 .logo {
   height: 60px;
   max-width: 200px;
@@ -32,7 +35,6 @@ aside.sidebar .nav .nav-item .nav-link {
 aside.sidebar .nav .nav-item .nav-link:hover {
     background-color: #b54545;
 }
-
 
 .main-layout {
   display: flex;

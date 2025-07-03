@@ -1,5 +1,6 @@
 package edu.estu.unisis.controller;
 
+import edu.estu.unisis.model.Department;
 import edu.estu.unisis.model.User;
 import edu.estu.unisis.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -42,7 +43,7 @@ public class UserController {
                                @RequestParam("password") String password,
                                @RequestParam("password_confirm") String passwordConfirm,
                                @RequestParam("number") String number,
-                               @RequestParam("estu_department") String department,
+                               @RequestParam("department") Department department,
                                @RequestParam("receipt") MultipartFile receipt,
                                RedirectAttributes redirectAttributes) {
 

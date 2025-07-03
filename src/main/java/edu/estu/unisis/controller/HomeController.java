@@ -9,9 +9,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String homePage(HttpSession session) {
-        if (session.getAttribute("loggedInUser") == null) {
-            return "redirect:/giris";
-        }
         return "home";
     }
 }
