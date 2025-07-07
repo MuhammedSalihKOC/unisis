@@ -3,15 +3,20 @@ package edu.estu.unisis.service;
 import edu.estu.unisis.model.User;
 import edu.estu.unisis.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 @Service
 public class UserManager implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public UserManager(UserRepository userRepository) {
-        this.userRepository = userRepository;}
+    public UserManager(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     @Override
@@ -33,8 +38,7 @@ public class UserManager implements UserService {
         } else {
             user = userRepository.findBySchoolNumber(identifier);
         }
-
-        if (user != null && user.getPassword().equals(password)) {
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             return user;
         }
 

@@ -1,5 +1,6 @@
 package edu.estu.unisis.controller;
 
+import edu.estu.unisis.model.Department;
 import edu.estu.unisis.model.User;
 import edu.estu.unisis.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -42,7 +42,7 @@ public class UserController {
                                @RequestParam("password") String password,
                                @RequestParam("password_confirm") String passwordConfirm,
                                @RequestParam("number") String number,
-                               @RequestParam("estu_department") String department,
+                               @RequestParam("department") Department department,
                                @RequestParam("receipt") MultipartFile receipt,
                                RedirectAttributes redirectAttributes) {
 
@@ -93,7 +93,7 @@ public class UserController {
 
         if (user != null) {
             session.setAttribute("loggedInUser", user);
-            return "redirect:/profil";
+            return "redirect:/";
         } else {
             redirectAttributes.addFlashAttribute("message", "Giriş bilgileri hatalı. Lütfen tekrar deneyiniz.");
             redirectAttributes.addFlashAttribute("messageType", "danger");

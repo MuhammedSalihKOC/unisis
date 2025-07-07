@@ -1,7 +1,6 @@
 package edu.estu.unisis.model;
 
 import jakarta.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,9 +26,35 @@ public class User {
     private String phoneNumber;
 
 
-    @Column(name = "estu_department")
-    private String department;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
     @Lob
     private byte[] receipt;
 
@@ -82,13 +107,6 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
 
     public byte[] getReceipt() {
         return receipt;
@@ -97,4 +115,7 @@ public class User {
     public void setReceipt(byte[] receipt) {
         this.receipt = receipt;
     }
+
+
+
 }
