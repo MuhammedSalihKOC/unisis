@@ -10,6 +10,10 @@
         <h2 class="mb-0" th:text="${pageTitle}">Kullanıcılar</h2>
         <span th:text="'Toplam: ' + ${users.size()} + ' ' + ${roleLabel}"></span>
     </div>
+    <div class="input-group mb-3" style="max-width: 250px;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Ara...">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+    </div>
     <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle rounded shadow-sm">
             <thead class="table-danger">

@@ -4,6 +4,43 @@ window.addEventListener('DOMContentLoaded', function() {
     if(isAdmin && isDesktop) {
         toggleNav();
     }
+    const searchInput = document.getElementById('searchInput');
+    const tableRows = document.querySelectorAll('table tbody tr');
+
+    searchInput.addEventListener('input', function () {
+      const filter = searchInput.value.toLowerCase().trim();
+      const filterWords = filter.split(/\s+/).filter(w => w.length > 0);
+
+      tableRows.forEach(row => {
+        const nameCell = row.querySelector('td:nth-child(2) span');
+        if (!nameCell) return;
+
+        const originalName = nameCell.textContent;
+        const nameLower = originalName.toLowerCase();
+        const nameWords = nameLower.split(/\s+/);
+
+        const matches = filterWords.every(fw =>
+          nameWords.some(nw => nw.startsWith(fw))
+        );
+
+        if (!matches) {
+          row.style.display = 'none';
+          nameCell.innerHTML = originalName;
+          return;
+        }
+
+        row.style.display = '';
+
+        let highlightedName = originalName;
+        filterWords.forEach(word => {
+          const regex = new RegExp(`(^|\\s)(${word})`, 'ig');
+          highlightedName = highlightedName.replace(regex, (match, p1, p2) => {
+            return p1 + `<span class="highlight">${p2}</span>`;
+          });
+        });
+        nameCell.innerHTML = highlightedName;
+      });
+    });
 });
 function toggleNav() {
   var sidebar = document.getElementById("mySidebar");

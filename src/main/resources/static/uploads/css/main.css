@@ -9,7 +9,7 @@ body {
     background-color: #883434;
 }
 .bg-bordo3{
-    #b54545
+    background-color: #b54545;
 }
 .logo {
   height: 60px;
@@ -155,4 +155,7 @@ aside.sidebar .nav .nav-item .nav-link:hover {
   #main.shifted {
     margin-left: 0 !important;
   }
+}
+.highlight {
+  background-color: #f8d7da;
 }
