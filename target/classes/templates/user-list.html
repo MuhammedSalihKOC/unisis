@@ -20,26 +20,30 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">
-                    <a class="text-dark" th:href="@{/{rolePath}(rolePath=${rolePath}, sort='name', dir=${sortField == 'name' ? reverseSortDir : 'asc'})}">
+                    <a class="text-dark"
+                       th:href="@{/{rolePath}(rolePath=${rolePath}, sort='name', dir=${sortField == 'name' ? reverseSortDir : 'asc'})}">
                         İsim
                         <span th:if="${sortField == 'name'}" th:text="${sortDir == 'asc' ? '↑' : '↓'}"></span>
                     </a>
                 </th>
-                <th scope="col">
-                    <a class="text-dark" th:href="@{/{rolePath}(rolePath=${rolePath}, sort='department.name', dir=${sortField == 'department.name' ? reverseSortDir : 'asc'})}">
+                <th scope="col" th:if="${rolePath != 'yoneticiler'}">
+                    <a class="text-dark"
+                       th:href="@{/{rolePath}(rolePath=${rolePath}, sort='department.name', dir=${sortField == 'department.name' ? reverseSortDir : 'asc'})}">
                         Bölüm
                         <span th:if="${sortField == 'department.name'}"
                               th:text="${sortDir == 'asc' ? '↑' : '↓'}"></span>
                     </a>
                 </th>
                 <th scope="col">
-                    <a class="text-dark" th:href="@{/{rolePath}(rolePath=${rolePath}, sort='email', dir=${sortField == 'email' ? reverseSortDir : 'asc'})}">
+                    <a class="text-dark"
+                       th:href="@{/{rolePath}(rolePath=${rolePath}, sort='email', dir=${sortField == 'email' ? reverseSortDir : 'asc'})}">
                         Email
                         <span th:if="${sortField == 'email'}" th:text="${sortDir == 'asc' ? '↑' : '↓'}"></span>
                     </a>
                 </th>
-                <th scope="col">
-                    <a class="text-dark" th:href="@{/{rolePath}(rolePath=${rolePath}, sort='schoolNumber', dir=${sortField == 'schoolNumber' ? reverseSortDir : 'asc'})}">
+                <th scope="col" th:if="${rolePath == 'ogrenciler'}">
+                    <a class="text-dark"
+                       th:href="@{/{rolePath}(rolePath=${rolePath}, sort='schoolNumber', dir=${sortField == 'schoolNumber' ? reverseSortDir : 'asc'})}">
                         Okul No
                         <span th:if="${sortField == 'schoolNumber'}" th:text="${sortDir == 'asc' ? '↑' : '↓'}"></span>
                     </a>
@@ -51,9 +55,9 @@
             <tr th:each="user, iter : ${users}">
                 <td th:text="${iter.index + 1}"></td>
                 <td><span class="fw-semibold" th:text="${user.name}"></span></td>
-                <td th:text="${user.department.name}"></td>
+                <td th:text="${user.department.name}" th:if="${rolePath != 'yoneticiler'}"></td>
                 <td th:text="${user.email}"></td>
-                <td th:text="${user.schoolNumber}"></td>
+                <td th:text="${user.schoolNumber}" th:if="${rolePath == 'ogrenciler'}"></td>
                 <td class="align-middle text-center">
                     <a class="btn btn-sm btn-danger"
                        th:href="@{'/' + ${rolePath} + '/' + ${user.id}}">Düzenle</a>

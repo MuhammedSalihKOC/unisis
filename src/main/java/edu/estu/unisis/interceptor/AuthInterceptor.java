@@ -11,14 +11,20 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String uri = request.getRequestURI();
-        if (uri.startsWith("/giris") || uri.startsWith("/kayit") || uri.startsWith("/css") || uri.startsWith("/js") || uri.startsWith("/img")) {
+        System.out.println("Request URI: " + uri);
+
+        if (uri.startsWith("/giris") || uri.startsWith("/kayit") || uri.startsWith("/user/register") ||
+                uri.startsWith("/css") || uri.startsWith("/js") || uri.startsWith("/img")) {
             return true;
         }
+
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loggedInUser") == null) {
+            System.out.println("Redirecting to login...");
             response.sendRedirect("/giris");
             return false;
         }
         return true;
     }
+
 }

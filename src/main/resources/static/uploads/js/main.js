@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', function() {
     const tableRows = document.querySelectorAll('table tbody tr');
 
     searchInput.addEventListener('input', function () {
-      const filter = searchInput.value.toLowerCase().trim();
+      const filter = toTurkishLower(searchInput.value.trim());
       const filterWords = filter.split(/\s+/).filter(w => w.length > 0);
 
       tableRows.forEach(row => {
@@ -16,7 +16,7 @@ window.addEventListener('DOMContentLoaded', function() {
         if (!nameCell) return;
 
         const originalName = nameCell.textContent;
-        const nameLower = originalName.toLowerCase();
+        const nameLower = toTurkishLower(originalName);
         const nameWords = nameLower.split(/\s+/);
 
         const matches = filterWords.every(fw =>
@@ -31,17 +31,28 @@ window.addEventListener('DOMContentLoaded', function() {
 
         row.style.display = '';
 
+        // Highlight işlemi: sadece kelimelerin başındaki eşleşen kısmı işaretle
         let highlightedName = originalName;
+
         filterWords.forEach(word => {
-          const regex = new RegExp(`(^|\\s)(${word})`, 'ig');
-          highlightedName = highlightedName.replace(regex, (match, p1, p2) => {
-            return p1 + `<span class="highlight">${p2}</span>`;
-          });
+          const originalWords = highlightedName.split(/\s+/);
+          highlightedName = originalWords.map(ow => {
+            const owLower = toTurkishLower(ow);
+            if (owLower.startsWith(word)) {
+              return `<span class="highlight">${ow.substring(0, word.length)}</span>` + ow.substring(word.length);
+            } else {
+              return ow;
+            }
+          }).join(' ');
         });
+
         nameCell.innerHTML = highlightedName;
       });
     });
 });
+function toTurkishLower(str) {
+  return str.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase();
+}
 function toggleNav() {
   var sidebar = document.getElementById("mySidebar");
   var main = document.getElementById("main");
@@ -83,3 +94,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
