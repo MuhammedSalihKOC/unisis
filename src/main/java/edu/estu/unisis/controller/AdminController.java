@@ -1,8 +1,10 @@
     package edu.estu.unisis.controller;
 
+    import edu.estu.unisis.model.Course;
     import edu.estu.unisis.model.Department;
     import edu.estu.unisis.model.Role;
     import edu.estu.unisis.model.User;
+    import edu.estu.unisis.service.CourseService;
     import edu.estu.unisis.service.DepartmentService;
     import edu.estu.unisis.service.RoleService;
     import edu.estu.unisis.service.UserService;
@@ -22,13 +24,16 @@
         private final UserService userService;
         private final DepartmentService departmentService;
         private final RoleService roleService;
+        private final CourseService courseService;
         private final PasswordEncoder passwordEncoder;
 
+
         @Autowired
-        public AdminController(UserService userService, DepartmentService departmentService, RoleService roleService, PasswordEncoder passwordEncoder) {
+        public AdminController(UserService userService, DepartmentService departmentService, RoleService roleService, CourseService courseService, PasswordEncoder passwordEncoder) {
             this.userService = userService;
             this.departmentService = departmentService;
             this.roleService = roleService;
+            this.courseService = courseService;
             this.passwordEncoder = passwordEncoder;
         }
 
@@ -199,6 +204,74 @@
                 redirectAttributes.addFlashAttribute("messageType", "danger");
                 return "redirect:/" + rolePath;
             }
+        }
+        @GetMapping("/dersler")
+        public String listCourses(
+                @RequestParam(name = "sort", required = false, defaultValue = "name") String sortField,
+                @RequestParam(name = "dir", required = false, defaultValue = "asc") String sortDir,
+                Model model
+        ) {
+            List<Course> courses = courseService.getAllCoursesSorted(sortField, sortDir);
+            model.addAttribute("courses", courses);
+            model.addAttribute("pageTitle", "Dersler");
+            model.addAttribute("sortField", sortField);
+            model.addAttribute("sortDir", sortDir);
+            model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+            return "course-list";
+        }
+
+        @GetMapping("/dersler/{id}")
+        public String showEditCourseForm(@PathVariable Long id, Model model,
+                                         @RequestParam(name = "sort", required = false, defaultValue = "name") String sortField,
+                                         @RequestParam(name = "dir", required = false, defaultValue = "asc") String sortDir) {
+            Course course = courseService.getCourseById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Ders bulunamadı: " + id));
+            List<Department> departments = departmentService.getAllDepartments();
+            List<User> instructors = userService.getAllInstructorsSorted(sortField, sortDir);
+            model.addAttribute("course", course);
+            model.addAttribute("departments", departments);
+            model.addAttribute("instructors", instructors);
+            model.addAttribute("pageTitle", "Dersler");
+            return "course-edit";
+        }
+
+        @PostMapping("/dersler/{id}/edit")
+        public String updateCourse(@PathVariable Long id, @ModelAttribute("course") Course updatedCourse, Model model) {
+            updatedCourse.setId(id);
+            courseService.updateCourse(updatedCourse);
+            return "redirect:/dersler";
+        }
+
+        @PostMapping("/dersler/{id}/delete")
+        public String deleteCourse(@PathVariable Long id) {
+            courseService.deleteCourse(id);
+            return "redirect:/dersler";
+        }
+
+        @GetMapping("/dersler/ekle")
+        public String showAddCourseForm(Model model) {
+            model.addAttribute("course", new Course());
+            model.addAttribute("departments", departmentService.getAllDepartments());
+            model.addAttribute("instructors", userService.getAllInstructorsSorted("name", "asc"));
+            model.addAttribute("pageTitle", "Ders Ekle");
+            return "course-add";
+        }
+
+        @PostMapping("/dersler/ekle")
+        public String addCourse(
+                @ModelAttribute("course") Course course,
+                RedirectAttributes redirectAttributes
+        ) {
+            Department dept = departmentService.getDepartmentById(course.getDepartment().getId());
+            User instructor = userService.getById(course.getInstructor().getId());
+            course.setDepartment(dept);
+            course.setInstructor(instructor);
+
+            courseService.saveCourse(course);
+
+            redirectAttributes.addFlashAttribute("message", "Ders başarıyla eklendi!");
+            redirectAttributes.addFlashAttribute("messageType", "success");
+            return "redirect:/dersler";
         }
 
         private static class RoleInfo {

@@ -61,4 +61,15 @@ public class UserController {
         redirectAttributes.addFlashAttribute("messageType", "warning");
         return "redirect:/giris";
     }
+    @GetMapping("/profil")
+    public String profilePage(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+
+        if (user == null) {
+            return "redirect:/user/login";
+        }
+
+        model.addAttribute("user", user);
+        return "user/profile";
+    }
 }

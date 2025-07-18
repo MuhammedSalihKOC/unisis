@@ -2,6 +2,9 @@ body {
   font-family: "Nunito Sans", sans-serif !important;
   margin-top: 100px;
 }
+main.content {
+    margin-bottom: 70px;
+}
 .bg-bordo {
     background-color: #8C373E;
 }

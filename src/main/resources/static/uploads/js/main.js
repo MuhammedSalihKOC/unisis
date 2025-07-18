@@ -95,3 +95,108 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+let lastSortedCol = -1;
+let sortDir = "asc";
+
+function sortTable(colIndex) {
+    const table = document.getElementById("courseTable");
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.rows);
+    const ths = table.tHead.rows[0].cells;
+    for (let i = 0; i < ths.length; i++) {
+        let a = ths[i].querySelector("a");
+        if (a) {
+            a.innerHTML = a.innerText.replace(/[↑↓]/g, '').trim();
+        }
+    }
+    if (lastSortedCol === colIndex) {
+        sortDir = sortDir === "asc" ? "desc" : "asc";
+    } else {
+        sortDir = "asc";
+        lastSortedCol = colIndex;
+    }
+    let a = ths[colIndex].querySelector("a");
+    if (a) {
+        a.innerHTML = a.innerText + (sortDir === "asc" ? " ↑" : " ↓");
+    }
+    if (colIndex !== 0) {
+        rows.sort((a, b) => {
+            let valA = a.cells[colIndex].innerText.trim().toLowerCase();
+            let valB = b.cells[colIndex].innerText.trim().toLowerCase();
+            if (!isNaN(valA) && !isNaN(valB)) {
+                valA = Number(valA);
+                valB = Number(valB);
+            }
+            if (valA < valB) return sortDir === "asc" ? -1 : 1;
+            if (valA > valB) return sortDir === "asc" ? 1 : -1;
+            return 0;
+        });
+    } else {
+        rows.sort((a, b) => {
+            return 0;
+        });
+    }
+    rows.forEach((row, idx) => {
+        row.cells[0].innerText = idx + 1;
+        tbody.appendChild(row);
+    });
+}
+// Kullanıcı tablosu için sıralama fonksiyonu
+let lastSortedUserCol = -1;
+let userSortDir = "asc";
+
+function sortUserTable(colIndex) {
+    const table = document.getElementById("userTable");
+    if (!table) return;
+
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.rows);
+    const ths = table.tHead.rows[0].cells;
+
+    // Okları kaldır
+    for (let i = 0; i < ths.length; i++) {
+        let a = ths[i].querySelector("a");
+        if (a) {
+            a.innerHTML = a.innerText.replace(/[↑↓]/g, '').trim();
+        }
+    }
+
+    // Yön değiştir
+    if (lastSortedUserCol === colIndex) {
+        userSortDir = userSortDir === "asc" ? "desc" : "asc";
+    } else {
+        userSortDir = "asc";
+        lastSortedUserCol = colIndex;
+    }
+
+    // Aktif başlığa oku ekle
+    let a = ths[colIndex].querySelector("a");
+    if (a) {
+        a.innerHTML = a.innerText + (userSortDir === "asc" ? " ↑" : " ↓");
+    }
+
+    // Sıralama (ilk sütun için sadece numaralandır)
+    if (colIndex !== 0) {
+        rows.sort((a, b) => {
+            let valA = a.cells[colIndex].innerText.trim().toLowerCase();
+            let valB = b.cells[colIndex].innerText.trim().toLowerCase();
+            if (!isNaN(valA) && !isNaN(valB)) {
+                valA = Number(valA);
+                valB = Number(valB);
+            }
+            if (valA < valB) return userSortDir === "asc" ? -1 : 1;
+            if (valA > valB) return userSortDir === "asc" ? 1 : -1;
+            return 0;
+        });
+    }
+
+    // Sıralanan satırları tekrar ekle ve numaralandır
+    rows.forEach((row, idx) => {
+        row.cells[0].innerText = idx + 1;
+        tbody.appendChild(row);
+    });
+}
+
+
+
+
