@@ -16,6 +16,7 @@
     import org.springframework.web.multipart.MultipartFile;
     import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+    import java.util.ArrayList;
     import java.util.List;
 
     @Controller
@@ -207,18 +208,24 @@
         }
         @GetMapping("/dersler")
         public String listCourses(
-                @RequestParam(name = "sort", required = false, defaultValue = "name") String sortField,
-                @RequestParam(name = "dir", required = false, defaultValue = "asc") String sortDir,
+                @RequestParam(name = "departmentId", required = false) Long departmentId,
                 Model model
         ) {
-            List<Course> courses = courseService.getAllCoursesSorted(sortField, sortDir);
+            List<Course> courses;
+            if (departmentId != null) {
+                courses = courseService.getCoursesByDepartmentId(departmentId);
+            } else {
+                courses = new ArrayList<>();
+            }
+            List<Department> departments = departmentService.getAllDepartments();
+
+            model.addAttribute("departments", departments);
+            model.addAttribute("selectedDepartmentId", departmentId);
             model.addAttribute("courses", courses);
             model.addAttribute("pageTitle", "Dersler");
-            model.addAttribute("sortField", sortField);
-            model.addAttribute("sortDir", sortDir);
-            model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
             return "course-list";
         }
+
 
         @GetMapping("/dersler/{id}")
         public String showEditCourseForm(@PathVariable Long id, Model model,
@@ -237,6 +244,9 @@
 
         @PostMapping("/dersler/{id}/edit")
         public String updateCourse(@PathVariable Long id, @ModelAttribute("course") Course updatedCourse, Model model) {
+            if (updatedCourse.getInstructor() == null || updatedCourse.getInstructor().getId() == null) {
+                updatedCourse.setInstructor(null);
+            }
             updatedCourse.setId(id);
             courseService.updateCourse(updatedCourse);
             return "redirect:/dersler";
@@ -252,7 +262,6 @@
         public String showAddCourseForm(Model model) {
             model.addAttribute("course", new Course());
             model.addAttribute("departments", departmentService.getAllDepartments());
-            model.addAttribute("instructors", userService.getAllInstructorsSorted("name", "asc"));
             model.addAttribute("pageTitle", "Ders Ekle");
             return "course-add";
         }
@@ -263,10 +272,7 @@
                 RedirectAttributes redirectAttributes
         ) {
             Department dept = departmentService.getDepartmentById(course.getDepartment().getId());
-            User instructor = userService.getById(course.getInstructor().getId());
             course.setDepartment(dept);
-            course.setInstructor(instructor);
-
             courseService.saveCourse(course);
 
             redirectAttributes.addFlashAttribute("message", "Ders başarıyla eklendi!");

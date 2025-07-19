@@ -29,15 +29,39 @@
         </div>
         <div class="col-md-6">
             <label for="instructor" class="form-label">Öğretim Görevlisi</label>
-            <select id="instructor" th:field="*{instructor.id}" class="form-control" required>
-                <option th:each="inst : ${instructors}" th:value="${inst.id}" th:text="${inst.name}"
-                        th:selected="${inst.id == course.instructor.id}"></option>
+            <select id="instructor" th:field="*{instructor.id}" class="form-control">
+                <option value="">Seçiniz</option>
+                <option th:each="inst : ${instructors}"
+                        th:value="${inst.id}"
+                        th:text="${inst.name}"
+                        th:selected="${course.instructor != null and inst.id == course.instructor.id}">
+                </option>
             </select>
         </div>
         <div class="col-md-6">
             <label for="credit" class="form-label">Kredi</label>
             <input type="number" id="credit" th:field="*{credit}" class="form-control" min="0" required>
         </div>
+        <div class="col-md-6">
+            <label for="capacity" class="form-label">Kontenjan</label>
+            <input type="number" min="1" th:field="*{capacity}" id="capacity" class="form-control">
+        </div>
+
+        <div class="col-md-6">
+            <label for="semester" class="form-label">Yarıyıl</label>
+            <select th:field="*{semester}" id="semester" class="form-select" required>
+                <option value="">Seçiniz</option>
+                <option value="1">1. Yarıyıl</option>
+                <option value="2">2. Yarıyıl</option>
+                <option value="3">3. Yarıyıl</option>
+                <option value="4">4. Yarıyıl</option>
+                <option value="5">5. Yarıyıl</option>
+                <option value="6">6. Yarıyıl</option>
+                <option value="7">7. Yarıyıl</option>
+                <option value="8">8. Yarıyıl</option>
+            </select>
+        </div>
+
         <div class="col-12">
             <button type="submit" class="btn btn-success">Kaydet</button>
             <a th:href="@{'/dersler'}" class="btn btn-secondary ms-2">İptal</a>

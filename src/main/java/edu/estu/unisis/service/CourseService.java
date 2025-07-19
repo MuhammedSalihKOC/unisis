@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface CourseService {
     List<Course> getAllCoursesSorted(String sortField, String sortDir);
+    public List<Course> getCoursesByDepartmentId(Long departmentId);
     Optional<Course> getCourseById(Long id);
     Course saveCourse(Course course);
     Course updateCourse(Course course);

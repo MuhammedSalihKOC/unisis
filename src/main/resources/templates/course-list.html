@@ -12,39 +12,60 @@
     <h2 class="mb-0" th:text="${pageTitle}">Dersler</h2>
     <span th:text="'Toplam: ' + ${courses.size()} + ' ders'"></span>
   </div>
-  <div class="input-group mb-3" style="max-width: 250px;">
-    <input type="text" id="searchInput" class="form-control" placeholder="Ara...">
-    <span class="input-group-text"><i class="bi bi-search"></i></span>
+  <!-- Bölüm seçimi -->
+  <form method="get" th:action="@{/dersler}" class="row mb-3">
+    <div class="col-md-6">
+      <select name="departmentId" class="form-select" onchange="this.form.submit()">
+        <option value="">Bölüm Seçiniz</option>
+        <option th:each="dep : ${departments}" th:value="${dep.id}" th:text="${dep.name}"
+                th:selected="${dep.id == selectedDepartmentId}"></option>
+      </select>
+    </div>
+  </form>
+  <div th:if="${selectedDepartmentId != null}">
+    <div class="input-group mb-3" style="max-width: 250px;">
+      <input type="text" id="searchInput" class="form-control" placeholder="Ara...">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+    </div>
+    <div class="table-responsive">
+      <table id="courseTable" class="table table-hover table-bordered align-middle rounded shadow-sm">
+        <thead class="table-danger">
+        <tr>
+          <th scope="col"><a href="#" onclick="sortTable(0); return false;" class="text-dark text-decoration-none">#</a></th>
+          <th scope="col"><a href="#" onclick="sortTable(1); return false;" class="text-dark text-decoration-none">Ders Kodu</a></th>
+          <th scope="col"><a href="#" onclick="sortTable(2); return false;" class="text-dark text-decoration-none">Ders Adı</a></th>
+          <th scope="col"><a href="#" onclick="sortTable(3); return false;" class="text-dark text-decoration-none">Bölüm</a></th>
+          <th scope="col"><a href="#" onclick="sortTable(4); return false;" class="text-dark text-decoration-none">Kredi</a></th>
+          <th scope="col"><a href="#" onclick="sortTable(5); return false;" class="text-dark text-decoration-none">Yarıyıl</a></th>
+          <th scope="col"><a href="#" onclick="sortTable(6); return false;" class="text-dark text-decoration-none">Öğretim Görevlisi</a></th>
+          <th scope="col"><a href="#" onclick="sortTable(7); return false;" class="text-dark text-decoration-none">Kontenjan</a></th>
+          <th class="align-middle text-center" scope="col">İşlem</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course, iter : ${courses}">
+          <td th:text="${iter.index + 1}"></td>
+          <td th:text="${course.code}"></td>
+          <td th:text="${course.name}"></td>
+          <td th:text="${course.department != null ? course.department.name : 'Atanmamış'}"></td>
+          <td th:text="${course.credit != null ? course.credit : 'Atanmamış'}"></td>
+          <td th:text="${course.semester != null ? course.semester : 'Atanmamış'}"></td>
+          <td th:text="${course.instructor != null ? course.instructor.name : 'Atanmamış'}"></td>
+          <td th:text="${course.capacity != null ? course.capacity : 'Atanmamış'}"></td>
+          <td class="align-middle text-center">
+            <a class="btn btn-sm btn-danger"
+               th:href="@{'/dersler/' + ${course.id}}">Düzenle</a>
+          </td>
+        </tr>
+        <tr th:if="${courses.size() == 0}">
+          <td colspan="9" class="text-center text-muted">Seçili bölümde ders bulunamadı.</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="table-responsive">
-    <table id="courseTable" class="table table-hover table-bordered align-middle rounded shadow-sm">
-      <thead class="table-danger">
-      <tr>
-        <th scope="col"><a href="#" onclick="sortTable(0); return false;" class="text-dark text-decoration-none">#</a></th>
-        <th scope="col"><a href="#" onclick="sortTable(1); return false;" class="text-dark text-decoration-none">Ders Kodu</a></th>
-        <th scope="col"><a href="#" onclick="sortTable(2); return false;" class="text-dark text-decoration-none">Ders Adı</a></th>
-        <th scope="col"><a href="#" onclick="sortTable(3); return false;" class="text-dark text-decoration-none">Bölüm</a></th>
-        <th scope="col"><a href="#" onclick="sortTable(4); return false;" class="text-dark text-decoration-none">Öğretim Görevlisi</a></th>
-        <th scope="col"><a href="#" onclick="sortTable(5); return false;" class="text-dark text-decoration-none">Kredi</a></th>
-        <th class="align-middle text-center" scope="col">İşlem</th>
-
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="course, iter : ${courses}">
-        <td th:text="${iter.index + 1}"></td>
-        <td th:text="${course.code}"></td>
-        <td th:text="${course.name}"></td>
-        <td th:text="${course.department.name}"></td>
-        <td th:text="${course.instructor.name}"></td>
-        <td th:text="${course.credit}"></td>
-        <td class="align-middle text-center">
-          <a class="btn btn-sm btn-danger"
-             th:href="@{'/dersler/' + ${course.id}}">Düzenle</a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <div th:if="${selectedDepartmentId == null}">
+    <div class="alert alert-warning mt-4">Lütfen önce bir bölüm seçiniz.</div>
   </div>
 </div>
 </body>

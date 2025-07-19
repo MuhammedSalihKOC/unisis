@@ -15,16 +15,21 @@ public class Course {
     @Column(nullable = false)
     private String name;
 
-    private Integer credit;
+    private Double credit;
+
+    private Integer capacity;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "instructor_id", nullable = false)
+    @JoinColumn(name = "instructor_id")
     private User instructor;
 
+    @Column(nullable = false)
+    private Integer semester;
 
     public Long getId() {
         return id;
@@ -50,12 +55,20 @@ public class Course {
         this.name = name;
     }
 
-    public Integer getCredit() {
+    public Double getCredit() {
         return credit;
     }
 
-    public void setCredit(Integer credit) {
+    public void setCredit(Double credit) {
         this.credit = credit;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
     }
 
     public Department getDepartment() {
@@ -72,5 +85,13 @@ public class Course {
 
     public void setInstructor(User instructor) {
         this.instructor = instructor;
+    }
+
+    public Integer getSemester() {
+        return semester;
+    }
+
+    public void setSemester(Integer semester) {
+        this.semester = semester;
     }
 }

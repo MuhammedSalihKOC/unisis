@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,14 @@ public class CourseManager implements CourseService {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equalsIgnoreCase("asc") ? sort.ascending() : sort.descending();
         return courseRepository.findAll(sort);
+    }
+    @Override
+    public List<Course> getCoursesByDepartmentId(Long departmentId) {
+        if (departmentId != null) {
+            return courseRepository.findByDepartmentId(departmentId);
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 
