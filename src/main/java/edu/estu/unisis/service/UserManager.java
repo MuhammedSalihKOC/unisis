@@ -1,14 +1,12 @@
 package edu.estu.unisis.service;
 
-import edu.estu.unisis.model.Department;
+
 import edu.estu.unisis.model.User;
 import edu.estu.unisis.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

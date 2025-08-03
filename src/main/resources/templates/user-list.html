@@ -19,18 +19,18 @@
             <thead class="table-danger">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col"><a href="#" onclick="sortUserTable(1); return false;"
+                <th scope="col"><a href="#" onclick="sortTable('userTable', 1); return false;"
                                    class="text-dark text-decoration-none">İsim</a></th>
 
                 <th scope="col" th:if="${rolePath != 'yoneticiler'}">
-                    <a href="#" onclick="sortUserTable(2); return false;" class="text-dark text-decoration-none">Bölüm</a>
+                    <a href="#" onclick="sortTable('userTable', 2); return false;" class="text-dark text-decoration-none">Bölüm</a>
                 </th>
                 <th scope="col">
-                    <a href="#" onclick="sortUserTable(3); return false;" class="text-dark text-decoration-none">Email</a>
+                    <a href="#" onclick="sortTable('userTable', 3); return false;" class="text-dark text-decoration-none">Email</a>
 
                 </th>
                 <th scope="col" th:if="${rolePath == 'ogrenciler'}">
-                    <a href="#" onclick="sortUserTable(4); return false;" class="text-dark text-decoration-none">Okul No</a>
+                    <a href="#" onclick="sortTable('userTable', 4); return false;" class="text-dark text-decoration-none">Okul No</a>
 
                 </th>
                 <th class="align-middle text-center" scope="col">İşlem</th>

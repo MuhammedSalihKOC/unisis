@@ -1,68 +1,3 @@
-window.addEventListener('DOMContentLoaded', function() {
-    const isAdmin = document.body.dataset.isAdmin === "true";
-    const isDesktop = window.innerWidth >= 992;
-    if(isAdmin && isDesktop) {
-        toggleNav();
-    }
-    const searchInput = document.getElementById('searchInput');
-    const tableRows = document.querySelectorAll('table tbody tr');
-
-    searchInput.addEventListener('input', function () {
-      const filter = toTurkishLower(searchInput.value.trim());
-      const filterWords = filter.split(/\s+/).filter(w => w.length > 0);
-
-      tableRows.forEach(row => {
-        const nameCell = row.querySelector('td:nth-child(2) span');
-        if (!nameCell) return;
-
-        const originalName = nameCell.textContent;
-        const nameLower = toTurkishLower(originalName);
-        const nameWords = nameLower.split(/\s+/);
-
-        const matches = filterWords.every(fw =>
-          nameWords.some(nw => nw.startsWith(fw))
-        );
-
-        if (!matches) {
-          row.style.display = 'none';
-          nameCell.innerHTML = originalName;
-          return;
-        }
-
-        row.style.display = '';
-
-        // Highlight işlemi: sadece kelimelerin başındaki eşleşen kısmı işaretle
-        let highlightedName = originalName;
-
-        filterWords.forEach(word => {
-          const originalWords = highlightedName.split(/\s+/);
-          highlightedName = originalWords.map(ow => {
-            const owLower = toTurkishLower(ow);
-            if (owLower.startsWith(word)) {
-              return `<span class="highlight">${ow.substring(0, word.length)}</span>` + ow.substring(word.length);
-            } else {
-              return ow;
-            }
-          }).join(' ');
-        });
-
-        nameCell.innerHTML = highlightedName;
-      });
-    });
-});
-function toTurkishLower(str) {
-  return str.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase();
-}
-function toggleNav() {
-  var sidebar = document.getElementById("mySidebar");
-  var main = document.getElementById("main");
-  sidebar.classList.toggle("show");
-  main.classList.toggle("shifted");
-}
-document.getElementById("closeSidebarBtn").onclick = function() {
-    document.getElementById("mySidebar").classList.remove("show");
-    document.getElementById("main").classList.remove("shifted");
-};
 document.addEventListener('DOMContentLoaded', function () {
   const phoneInput = document.getElementById('phoneNumber');
 
@@ -94,109 +29,168 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const departmentFilter = document.getElementById('departmentFilter');
+    const semesterFilter = document.getElementById('semesterFilter');
+    const searchInput = document.getElementById('searchInput');
+    const rows = document.querySelectorAll('#courseTable tbody tr');
+    const courseCount = document.getElementById('courseCount');
 
-let lastSortedCol = -1;
-let sortDir = "asc";
+    function toTurkishLower(str) {
+        return str.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase();
+    }
 
-function sortTable(colIndex) {
-    const table = document.getElementById("courseTable");
-    const tbody = table.tBodies[0];
-    const rows = Array.from(tbody.rows);
-    const ths = table.tHead.rows[0].cells;
-    for (let i = 0; i < ths.length; i++) {
-        let a = ths[i].querySelector("a");
-        if (a) {
-            a.innerHTML = a.innerText.replace(/[↑↓]/g, '').trim();
+    function filterCourses() {
+        const depValue = departmentFilter ? departmentFilter.value : "";
+        const semValue = semesterFilter ? semesterFilter.value : "";
+        const searchTerm = searchInput ? toTurkishLower(searchInput.value.trim()) : "";
+        const filterWords = searchTerm.split(/\s+/).filter(w => w.length > 0);
+
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            if(row.hasAttribute('data-deleted')) {
+                row.style.display = "none";
+                return;
+            }
+
+            const dept = row.dataset.department;
+            const semester = row.dataset.semester;
+            const nameCell = row.querySelector('.course-name');
+
+            if (!nameCell) return;
+
+            const originalName = nameCell.textContent;
+            const nameLower = toTurkishLower(originalName);
+            const nameWords = nameLower.split(/\s+/);
+
+            const matchesDepartment = depValue === "" || depValue == dept;
+            const matchesSemester = (function() {
+                if (semValue === "") return true;
+                if (semValue === "mesleki") return semester == "9";
+                return semester == semValue;
+            })();
+
+            const matchesSearch = filterWords.every(fw =>
+                nameWords.some(nw => nw.startsWith(fw))
+            );
+
+            if (matchesDepartment && matchesSemester && matchesSearch) {
+                row.style.display = "";
+                visibleCount++;
+
+                let highlightedName = originalName;
+                filterWords.forEach(word => {
+                    const originalWords = highlightedName.split(/\s+/);
+                    highlightedName = originalWords.map(ow => {
+                        const owLower = toTurkishLower(ow);
+                        if (owLower.startsWith(word)) {
+                            return `<span class="highlight">${ow.substring(0, word.length)}</span>` + ow.substring(word.length);
+                        } else {
+                            return ow;
+                        }
+                    }).join(' ');
+                });
+                nameCell.innerHTML = highlightedName;
+
+            } else {
+                row.style.display = "none";
+
+                nameCell.innerHTML = originalName;
+            }
+        });
+        const noResultsRow = document.getElementById('noResultsMessage');
+            if (noResultsRow) {
+                if (visibleCount === 0) {
+                    noResultsRow.style.display = "table-row";
+                } else {
+                    noResultsRow.style.display = "none";
+                }
+            }
+
+        if (courseCount) {
+            courseCount.textContent = `Toplam: ${visibleCount} ders`;
         }
     }
-    if (lastSortedCol === colIndex) {
-        sortDir = sortDir === "asc" ? "desc" : "asc";
-    } else {
-        sortDir = "asc";
-        lastSortedCol = colIndex;
+
+    if (departmentFilter) departmentFilter.addEventListener('change', filterCourses);
+    if (semesterFilter) semesterFilter.addEventListener('change', filterCourses);
+    if (searchInput) searchInput.addEventListener('input', filterCourses);
+
+    filterCourses();
+});
+window.addEventListener('DOMContentLoaded', function() {
+    const isAdmin = document.body.dataset.isAdmin === "true";
+    const isDesktop = window.innerWidth >= 992;
+    if(isAdmin && isDesktop) {
+        toggleNav();
     }
-    let a = ths[colIndex].querySelector("a");
-    if (a) {
-        a.innerHTML = a.innerText + (sortDir === "asc" ? " ↑" : " ↓");
-    }
-    if (colIndex !== 0) {
-        rows.sort((a, b) => {
-            let valA = a.cells[colIndex].innerText.trim().toLowerCase();
-            let valB = b.cells[colIndex].innerText.trim().toLowerCase();
-            if (!isNaN(valA) && !isNaN(valB)) {
-                valA = Number(valA);
-                valB = Number(valB);
-            }
-            if (valA < valB) return sortDir === "asc" ? -1 : 1;
-            if (valA > valB) return sortDir === "asc" ? 1 : -1;
-            return 0;
-        });
-    } else {
-        rows.sort((a, b) => {
-            return 0;
-        });
-    }
-    rows.forEach((row, idx) => {
-        row.cells[0].innerText = idx + 1;
-        tbody.appendChild(row);
-    });
+});
+document.getElementById("closeSidebarBtn").onclick = function() {
+    document.getElementById("mySidebar").classList.remove("show");
+    document.getElementById("main").classList.remove("shifted");
+};
+function toTurkishLower(str) {
+  return str.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase();
+
 }
-// Kullanıcı tablosu için sıralama fonksiyonu
-let lastSortedUserCol = -1;
-let userSortDir = "asc";
-
-function sortUserTable(colIndex) {
-    const table = document.getElementById("userTable");
-    if (!table) return;
-
-    const tbody = table.tBodies[0];
-    const rows = Array.from(tbody.rows);
-    const ths = table.tHead.rows[0].cells;
-
-    // Okları kaldır
-    for (let i = 0; i < ths.length; i++) {
-        let a = ths[i].querySelector("a");
-        if (a) {
-            a.innerHTML = a.innerText.replace(/[↑↓]/g, '').trim();
-        }
-    }
-
-    // Yön değiştir
-    if (lastSortedUserCol === colIndex) {
-        userSortDir = userSortDir === "asc" ? "desc" : "asc";
-    } else {
-        userSortDir = "asc";
-        lastSortedUserCol = colIndex;
-    }
-
-    // Aktif başlığa oku ekle
-    let a = ths[colIndex].querySelector("a");
-    if (a) {
-        a.innerHTML = a.innerText + (userSortDir === "asc" ? " ↑" : " ↓");
-    }
-
-    // Sıralama (ilk sütun için sadece numaralandır)
-    if (colIndex !== 0) {
-        rows.sort((a, b) => {
-            let valA = a.cells[colIndex].innerText.trim().toLowerCase();
-            let valB = b.cells[colIndex].innerText.trim().toLowerCase();
-            if (!isNaN(valA) && !isNaN(valB)) {
-                valA = Number(valA);
-                valB = Number(valB);
-            }
-            if (valA < valB) return userSortDir === "asc" ? -1 : 1;
-            if (valA > valB) return userSortDir === "asc" ? 1 : -1;
-            return 0;
-        });
-    }
-
-    // Sıralanan satırları tekrar ekle ve numaralandır
-    rows.forEach((row, idx) => {
-        row.cells[0].innerText = idx + 1;
-        tbody.appendChild(row);
-    });
+function toggleNav() {
+  var sidebar = document.getElementById("mySidebar");
+  var main = document.getElementById("main");
+  sidebar.classList.toggle("show");
+  main.classList.toggle("shifted");
 }
+const sortStates = {
+  courseTable: { lastSortedCol: -1, sortDir: 'asc' },
+  userTable: { lastSortedCol: -1, sortDir: 'asc' }
+};
+function sortTable(tableId, colIndex) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
 
+  const tbody = table.tBodies[0];
+  const rows = Array.from(tbody.rows);
+  const ths = table.tHead.rows[0].cells;
 
+  const state = sortStates[tableId];
 
+  for (let i = 0; i < ths.length; i++) {
+    let a = ths[i].querySelector('a');
+    if (a) {
+      a.innerHTML = a.innerText.replace(/[↑↓]/g, '').trim();
+    }
+  }
 
+  if (state.lastSortedCol === colIndex) {
+    state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    state.sortDir = 'asc';
+    state.lastSortedCol = colIndex;
+  }
+
+  let a = ths[colIndex].querySelector('a');
+  if (a) {
+    a.innerHTML = a.innerText + (state.sortDir === 'asc' ? ' ↑' : ' ↓');
+  }
+
+  if (colIndex !== 0) {
+    rows.sort((a, b) => {
+      let valA = a.cells[colIndex].innerText.trim().toLowerCase();
+      let valB = b.cells[colIndex].innerText.trim().toLowerCase();
+
+      if (!isNaN(valA) && !isNaN(valB)) {
+        valA = Number(valA);
+        valB = Number(valB);
+      }
+
+      if (valA < valB) return state.sortDir === 'asc' ? -1 : 1;
+      if (valA > valB) return state.sortDir === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }
+
+  rows.forEach((row, idx) => {
+    row.cells[0].innerText = idx + 1;
+    tbody.appendChild(row);
+  });
+}

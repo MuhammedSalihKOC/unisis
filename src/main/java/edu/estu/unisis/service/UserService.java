@@ -1,9 +1,7 @@
 package edu.estu.unisis.service;
 
-import edu.estu.unisis.model.Department;
 import edu.estu.unisis.model.User;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
