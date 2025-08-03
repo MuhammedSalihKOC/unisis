@@ -18,11 +18,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor())
-                .addPathPatterns("/**") // tüm yolları kontrol et
+                .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/giris", "/user/login", "/uploads/**", "/css/**", "/js/**", "/images/**", "/webjars/**", "/static/**"
+                        "/giris", "/user/login", "/uploads/**", "/css/**", "/js/**", "/images/**", "/webjars/**", "/static/**", "/"
                 );
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

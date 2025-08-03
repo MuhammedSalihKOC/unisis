@@ -2,9 +2,12 @@ package edu.estu.unisis.controller;
 
 import edu.estu.unisis.model.Department;
 import edu.estu.unisis.model.User;
+import edu.estu.unisis.service.DepartmentManager;
+import edu.estu.unisis.service.DepartmentService;
 import edu.estu.unisis.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,15 +17,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
+    private final DepartmentService departmentService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, DepartmentService departmentService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.departmentService = departmentService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/giris")
@@ -31,7 +39,11 @@ public class UserController {
     }
 
     @GetMapping("/kayit")
-    public String registerPage() {
+    public String registerPage(Model model) {
+        model.addAttribute("departments", departmentService.getAllDepartments());
+        User user = new User();
+        user.setDepartment(new Department());
+        model.addAttribute("user", user);
         return "user/register";
     }
 
@@ -42,7 +54,7 @@ public class UserController {
                                @RequestParam("password") String password,
                                @RequestParam("password_confirm") String passwordConfirm,
                                @RequestParam("number") String number,
-                               @RequestParam("department") Department department,
+                               @RequestParam("department") Long departmentId,
                                @RequestParam("receipt") MultipartFile receipt,
                                RedirectAttributes redirectAttributes) {
 
@@ -60,9 +72,11 @@ public class UserController {
         user.setName(name);
         user.setEmail(email);
         user.setSchoolNumber(schoolNumber);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         user.setPhoneNumber(number);
+        Department department = departmentService.getDepartmentById(departmentId);
         user.setDepartment(department);
+
 
         if (!receipt.isEmpty()) {
             try {

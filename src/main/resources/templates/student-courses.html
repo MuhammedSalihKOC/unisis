@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+
+<head><title>Derslerim - UNISIS</title></head>
+
+<body>
+<div layout:fragment="content" class="container py-4">
+    <div th:if="${message}" th:text="${message}" class="alert" th:classappend="' alert-' + ${messageType}"></div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0" th:text="${pageTitle}">Derslerim</h2>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <span>Dönem:</span>
+            <select id="departmentFilter" class="form-select">
+                <option value="">2025 - Güz</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="courseTable" class="table table-hover table-bordered align-middle rounded shadow-sm">
+            <thead class="table-danger">
+            <tr>
+                <th>#</th>
+                <th><a href="#" class="text-dark text-decoration-none">Ders Kodu</a></th>
+                <th><a href="#" class="text-dark text-decoration-none">Ders Adı</a></th>
+                <th><a href="#" class="text-dark text-decoration-none">Kredi</a></th>
+                <th><a href="#" class="text-dark text-decoration-none">Eğitmen</a></th>
+                <th class="text-center">İşlem</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="course, iter : ${courses}">
+                <td th:text="${iter.index + 1}"></td>
+                <td th:text="${course.code}"></td>
+                <td th:text="${course.name}"></td>
+                <td th:text="${course.credit}"></td>
+                <td th:text="${course.instructor != null ? course.instructor.name : 'Atanmamış'}"></td>
+                <td class="align-middle text-center">
+                    <button class="btn btn-sm btn-danger view-details"
+                            th:attr="data-code=${course.code},
+             data-name=${course.name},
+             data-credit=${course.credit},
+             data-instructor=${course.instructor != null ? course.instructor.name : 'Atanmamış'},
+             data-department=${course.department != null ? course.department.name : 'Atanmamış'},
+             data-capacity=${course.capacity != null ? course.department.name : 'Atanmamış'},
+             data-semester=${course.semester}">
+                        Detay
+                    </button>
+
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+        <div class="modal fade" id="courseDetailModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-bordo text-white">
+                        <h5 class="modal-title">Ders Detayları</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Ders Kodu:</strong> <span id="modal-code"></span></p>
+                        <p><strong>Ders Adı:</strong> <span id="modal-name"></span></p>
+                        <p><strong>Bölüm:</strong> <span id="modal-department"></span></p>
+                        <p><strong>Eğitmen:</strong> <span id="modal-instructor"></span></p>
+                        <p><strong>Kredi:</strong> <span id="modal-credit"></span></p>
+                        <p><strong>Kontenjan:</strong> <span id="modal-capacity"></span></p>
+                        <p><strong>Yarıyıl:</strong> <span id="modal-semester"></span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

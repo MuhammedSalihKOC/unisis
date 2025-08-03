@@ -4,7 +4,6 @@ import edu.estu.unisis.model.Department;
 import edu.estu.unisis.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 
@@ -26,5 +25,15 @@ public class DepartmentManager implements DepartmentService {
     @Override
     public Department getDepartmentById(Long id) {
         return departmentRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Department save(Department department) {
+        return departmentRepository.save(department);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        departmentRepository.deleteById(id);
     }
 }

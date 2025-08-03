@@ -50,7 +50,8 @@ a {
   text-align: left;
 }
 
-.login-register-container input {
+.login-register-container input,
+.login-register-container select {
   border-radius: 0.75rem;
   padding: 12px 15px;
   border: 1px solid #ccc;
@@ -58,6 +59,7 @@ a {
   margin-bottom: 1rem;
   width: 100%;
 }
+
 .login-register-container button[type="submit"] {
   padding: 14px 0;
   font-size: 1.1rem;

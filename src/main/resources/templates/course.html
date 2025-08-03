@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <title th:text="${pageTitle + ' Bilgileri - UNISIS'}">UNISIS</title>
+</head>
+<body>
+<div layout:fragment="content" class="container py-4">
+    <div class="mb-4">
+        <h2 th:text="${pageTitle + ' Bilgileri'}">Ders Bilgileri</h2>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label">Ders Kodu</label>
+            <p class="form-control-plaintext" th:text="${course.code}"></p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Ders Adı</label>
+            <p class="form-control-plaintext" th:text="${course.name}"></p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Bölüm</label>
+            <p class="form-control-plaintext" th:text="${course.department != null ? course.department.name : 'Atanmamış'}"></p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Öğretim Görevlisi</label>
+            <p class="form-control-plaintext" th:text="${course.instructor != null ? course.instructor.name : 'Atanmamış'}"></p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Kredi</label>
+            <p class="form-control-plaintext" th:text="${course.credit != null ? course.credit : 'Belirtilmemiş'}"></p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Kontenjan</label>
+            <p class="form-control-plaintext" th:text="${course.capacity != null ? course.capacity : 'Belirtilmemiş'}"></p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Yarıyıl</label>
+            <p class="form-control-plaintext" th:text="${course.semester != null ? course.semester + '. Yarıyıl' : 'Belirtilmemiş'}"></p>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{'/dersler'}" class="btn btn-secondary">Geri Dön</a>
+    </div>
+</div>
+</body>
+</html>

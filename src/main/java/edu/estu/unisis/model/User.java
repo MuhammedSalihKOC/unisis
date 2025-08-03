@@ -1,7 +1,9 @@
 package edu.estu.unisis.model;
 
 import jakarta.persistence.*;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -46,15 +48,9 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "student")
+    private List<StudentCourse> studentCourses;
 
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
     @Lob
     private byte[] receipt;
 
@@ -116,6 +112,12 @@ public class User {
         this.receipt = receipt;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
 }
