@@ -130,3 +130,94 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const departmentFilter = document.getElementById('departmentFilter');
+    const semesterFilter = document.getElementById('semesterFilter');
+    const searchInput = document.getElementById('searchInput');
+    const rows = document.querySelectorAll('#courseTable tbody tr');
+    const courseCount = document.getElementById('courseCount');
+
+    function toTurkishLower(str) {
+        return str.replace(/I/g, 'ı').replace(/İ/g, 'i').toLowerCase();
+    }
+
+    function filterCourses() {
+        const depValue = departmentFilter ? departmentFilter.value : "";
+        const semValue = semesterFilter ? semesterFilter.value : "";
+        const searchTerm = searchInput ? toTurkishLower(searchInput.value.trim()) : "";
+        const filterWords = searchTerm.split(/\s+/).filter(w => w.length > 0);
+
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            if(row.hasAttribute('data-deleted')) {
+                row.style.display = "none";
+                return;
+            }
+
+            const dept = row.dataset.department;
+            const semester = row.dataset.semester;
+            const nameCell = row.querySelector('.course-name');
+
+            if (!nameCell) return;
+
+            const originalName = nameCell.textContent;
+            const nameLower = toTurkishLower(originalName);
+            const nameWords = nameLower.split(/\s+/);
+
+            const matchesDepartment = depValue === "" || depValue == dept;
+            const matchesSemester = (function() {
+                if (semValue === "") return true;
+                if (semValue === "mesleki") return semester == "9";
+                return semester == semValue;
+            })();
+
+            const matchesSearch = filterWords.every(fw =>
+                nameWords.some(nw => nw.startsWith(fw))
+            );
+
+            if (matchesDepartment && matchesSemester && matchesSearch) {
+                row.style.display = "";
+                visibleCount++;
+
+                let highlightedName = originalName;
+                filterWords.forEach(word => {
+                    const originalWords = highlightedName.split(/\s+/);
+                    highlightedName = originalWords.map(ow => {
+                        const owLower = toTurkishLower(ow);
+                        if (owLower.startsWith(word)) {
+                            return `<span class="highlight">${ow.substring(0, word.length)}</span>` + ow.substring(word.length);
+                        } else {
+                            return ow;
+                        }
+                    }).join(' ');
+                });
+                nameCell.innerHTML = highlightedName;
+
+            } else {
+                row.style.display = "none";
+
+                nameCell.innerHTML = originalName;
+            }
+        });
+        const noResultsRow = document.getElementById('noResultsMessage');
+            if (noResultsRow) {
+                if (visibleCount === 0) {
+                    noResultsRow.style.display = "table-row";
+                } else {
+                    noResultsRow.style.display = "none";
+                }
+            }
+
+        if (courseCount) {
+            courseCount.textContent = `Toplam: ${visibleCount} ders`;
+        }
+    }
+
+    if (departmentFilter) departmentFilter.addEventListener('change', filterCourses);
+    if (semesterFilter) semesterFilter.addEventListener('change', filterCourses);
+    if (searchInput) searchInput.addEventListener('input', filterCourses);
+
+    filterCourses();
+});
+

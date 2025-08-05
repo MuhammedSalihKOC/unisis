@@ -20,6 +20,11 @@ public class CourseManager implements CourseService {
     }
 
     @Override
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
+    }
+
+    @Override
     public List<Course> getAllCoursesSorted(String sortField, String sortDir) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equalsIgnoreCase("asc") ? sort.ascending() : sort.descending();
@@ -45,4 +50,9 @@ public class CourseManager implements CourseService {
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
     }
+    @Override
+    public List<Course> getCoursesByDepartmentOrderBySemester(Long departmentId) {
+        return courseRepository.findByDepartmentIdOrderBySemesterAsc(departmentId);
+    }
+
 }

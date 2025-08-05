@@ -1,8 +1,18 @@
 body {
   font-family: "Nunito Sans", sans-serif !important;
+    margin-top: 75px;
 }
 .bg-bordo {
     background-color: #8C373E;
+}
+.bg-bordo2{
+    background-color: #883434;
+}
+.bg-bordo3{
+    background-color: #b54545;
+}
+.bg-bordo4{
+    background-color: #f8d7da;
 }
 .logo {
   height: 60px;
@@ -101,4 +111,7 @@ a {
   background-color: #d0ebff;
   border-color: #74c0fc;
   font-weight: 600;
+}
+.highlight {
+  background-color: #f8d7da;
 }

@@ -16,7 +16,7 @@
 </head>
 <body>
 <!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg bg-bordo shadow">
+<nav class="navbar navbar-expand-lg bg-bordo shadow fixed-top">
     <div class="container">
         <a class="navbar-brand" th:href="@{/}">
             <img src="/uploads/images/estu-logo.png" class="logo">
@@ -29,6 +29,10 @@
             <ul class="navbar-nav ms-auto">
 
                 <!-- Oturum açılmışsa profil -->
+                <li th:if="${session.loggedInUser != null}" class="nav-item">
+                    <a class="nav-link" th:href="@{/dersler/kayit}">Ders Kayıt</a>
+                </li>
+
                 <li th:if="${session.loggedInUser != null}" class="nav-item">
                     <a class="nav-link" th:href="@{/derslerim}">Derslerim</a>
                 </li>

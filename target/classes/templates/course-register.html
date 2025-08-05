@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<head>
+    <title th:text="${pageTitle} + ' - UNISIS'">UNISIS</title>
+</head>
+<body>
+<div layout:fragment="content" class="container py-4">
+
+    <!-- Flash Mesajlar -->
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <!-- Başlık -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0" th:text="${pageTitle}">Ders Kayıt</h2>
+        <div class="badge bg-bordo4 text-dark px-3 py-2" style="font-size: 1rem;">
+            Toplam Kredi: <span th:text="${totalCredits}"></span> / 45
+        </div>
+    </div>
+    <!-- Mevcut Alınan Dersler -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-bordo3 text-white">
+            Mevcut Alınan Dersler
+        </div>
+        <div class="card-body p-2">
+            <table class="table table-sm table-bordered mb-0">
+                <thead class="table-danger">
+                <tr>
+                    <th>#</th>
+                    <th>Ders Kodu</th>
+                    <th>Ders Adı</th>
+                    <th>Kredi</th>
+                    <th class="text-center">İşlem</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="course, iter : ${registeredCourses}">
+                    <td th:text="${iter.index + 1}"></td>
+                    <td th:text="${course.code}"></td>
+                    <td th:text="${course.name}"></td>
+                    <td th:text="${course.credit}"></td>
+                    <td class="text-center">
+                        <form th:action="@{/dersler/sil/{id}(id=${course.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(registeredCourses)}">
+                    <td colspan="5" class="text-center text-muted">Henüz kayıtlı dersiniz yok.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-end" id="courseCount">Toplam: <span th:text="${allCourses.size()}"></span> ders</div>
+    <!-- Filtreler -->
+    <div class="row mb-3">
+        <!-- Departman Filtresi -->
+        <div class="col-md-4">
+            <span>Departman:</span>
+            <select id="departmentFilter" class="form-select">
+                <option value="">Bilgisayar Mühendisliği</option>
+                <option th:each="dep : ${departments}"
+                        th:value="${dep.id}"
+                        th:text="${dep.name}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Yarıyıl Filtresi -->
+        <div class="col-md-4">
+            <span>Yarıyıl:</span>
+            <select id="semesterFilter" class="form-select">
+                <option value="">Tümü</option>
+                <option value="mesleki">Mesleki Seçmeli</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+        </div>
+
+        <!-- Arama Kutusu -->
+        <div class="col-md-4">
+            <span>Ara:</span>
+            <div class="input-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Ders ara...">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ders Tablosu -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-bordo3 text-white">
+            Tüm Dersler
+        </div>
+        <table id="courseTable" class="table table-hover table-bordered align-middle rounded shadow-sm">
+            <thead class="table-danger">
+            <tr>
+                <th>#</th>
+                <th><a href="#" onclick="sortTable('courseTable', 1); return false;" class="text-dark text-decoration-none">Ders Adı</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 2); return false;" class="text-dark text-decoration-none">Ders Kodu</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 3); return false;" class="text-dark text-decoration-none">Bölüm</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 4); return false;" class="text-dark text-decoration-none">Kredi</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 5); return false;" class="text-dark text-decoration-none">Yarıyıl</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 6); return false;" class="text-dark text-decoration-none">Eğitmen</a></th>
+                <th class="text-center">İşlem</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="course, iter : ${allCourses}"
+                th:data-department="${course.department != null ? course.department.id : ''}"
+                th:data-semester="${course.semester != null ? course.semester : ''}">
+                <td th:text="${iter.index + 1}"></td>
+                <td><span class="course-name fw-semibold" th:text="${course.name}"></span></td>
+                <td class="course-code" th:text="${course.code}"></td>
+                <td th:text="${course.department != null ? course.department.name : 'Atanmamış'}"></td>
+                <td th:text="${course.credit != null ? course.credit : 'Atanmamış'}"></td>
+                <td th:text="${course.semester == 9 ? 'Mesleki Seçmeli' : course.semester}"></td>
+                <td th:text="${course.instructor != null ? course.instructor.name : 'Atanmamış'}"></td>
+                <td class="text-center">
+                    <!-- Eğer kayıtlı ise "Çık" -->
+                    <div th:if="${registeredCourseIds.contains(course.id)}">
+                        <form th:action="@{/dersler/sil/{id}(id=${course.id})}" method="post"
+                              style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                        </form>
+                    </div>
+                    <!-- Değilse "Kayıt Ol" -->
+                    <div th:unless="${registeredCourseIds.contains(course.id)}">
+                        <form th:action="@{/dersler/ekle/{id}(id=${course.id})}" method="post"
+                              style="display:inline;">
+                            <button type="submit" class="btn btn-success btn-sm">Ekle</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr id="noResultsMessage" style="display:none;">
+                <td colspan="8" class="text-center text-muted">
+                    Arama ve filtrelere uygun ders bulunamadı.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
