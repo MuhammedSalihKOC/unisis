@@ -44,7 +44,6 @@ public class StudentCourseManager implements StudentCourseService {
 
     @Override
     public void registerCourse(Long studentId, Long courseId) {
-        // 1. Kredi kontrolü
         if (!canRegisterCourse(studentId, courseId)) {
             throw new RuntimeException("Ders eklenemedi: Kredi limiti aşıldı");
         }
@@ -62,9 +61,6 @@ public class StudentCourseManager implements StudentCourseService {
 
         studentCourseRepository.save(studentCourse);
     }
-
-
-
 
     @Override
     public void dropCourse(Long studentId, Long courseId) {

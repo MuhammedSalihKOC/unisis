@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{base}">
+      layout:decorate="~{shared/base}">
 <head><title>Okul Kaydı - UNISIS</title></head>
 
 <body>
 <div layout:fragment="content" class="container mt-5">
     <div class="login-register-container">
         <h2>Okul Kaydı</h2>
+
+        <div th:if="${message != null}"
+             class="alert alert-dismissible fade show mt-3"
+             th:classappend="
+     ${messageType} == 'success' ? ' alert-success' :
+     (${messageType} == 'warning' ? ' alert-warning' : ' alert-danger')"
+             role="alert">
+            <span th:text="${message}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
         <form action="/user/register" th:object="${user}" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="name" class="form-label">Ad Soyad</label>
@@ -89,6 +100,5 @@
         </form>
     </div>
 </div>
-<script src="/uploads/js/main.js"></script>
 </body>
 </html>

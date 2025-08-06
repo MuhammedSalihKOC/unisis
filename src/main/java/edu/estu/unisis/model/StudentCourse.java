@@ -22,7 +22,6 @@ public class StudentCourse {
     @Column(name = "registered_at", nullable = false, updatable = false)
     private LocalDateTime registeredAt = LocalDateTime.now();
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

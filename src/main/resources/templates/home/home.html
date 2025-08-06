@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shared/base}">
+<head><title>Anasayfa - UNISIS</title></head>
+<body>
+<div layout:fragment="content">
+
+    <section>
+                <div class="d-flex justify-content-center">
+                    <img src="/uploads/images/estu-res2.png" class="w-100"
+                         style="height: 90vh; object-fit: cover;"  alt="ESTÜ Kampüsü">
+                </div>
+    </section>
+
+
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Güncel Duyurular</h2>
+        <div class="row g-3">
+            <div class="col-lg-6">
+                <div class="card h-100 shadow-lg">
+                    <img src="/uploads/images/duyuru1.jpg" class="card-img-top" alt="Favori Duyuru">
+                    <div class="card-body">
+                        <h5 class="card-title">Yeni Eğitim Dönemi Başladı</h5>
+                        <p class="card-text">2025-2026 Akademik yılı ders kayıtları başladı. Detayları öğrenmek için tıklayın.</p>
+                        <a href="/duyurular/1" class="btn btn-danger">İncele</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <!-- Duyuru 2 -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <img src="/uploads/images/duyuru2.jpg" class="card-img-top" alt="Duyuru 2">
+                            <div class="card-body">
+                                <h6 class="card-title">Mezuniyet Töreni Kayıtları Başladı</h6>
+                                <a href="/duyurular/2" class="btn btn-sm btn-outline-danger">Detay</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <img src="/uploads/images/duyuru3.jpg" class="card-img-top" alt="Duyuru 3">
+                            <div class="card-body">
+                                <h6 class="card-title">Kütüphane Çalışma Saatleri Güncellendi</h6>
+                                <a href="/duyurular/3" class="btn btn-sm btn-outline-danger">Detay</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <img src="/uploads/images/duyuru4.jpg" class="card-img-top" alt="Duyuru 4">
+                            <div class="card-body">
+                                <h6 class="card-title">Bahar Festivali Etkinlik Programı Açıklandı</h6>
+                                <a href="/duyurular/4" class="btn btn-sm btn-outline-danger">Detay</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <img src="/uploads/images/duyuru5.jpg" class="card-img-top" alt="Duyuru 5">
+                            <div class="card-body">
+                                <h6 class="card-title">Staj Başvuruları İçin Son Gün 30 Mart</h6>
+                                <a href="/duyurular/5" class="btn btn-sm btn-outline-danger">Detay</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Etkinlik Takvimi</h2>
+            <div class="row row-cols-1 row-cols-md-4 g-4">
+                <div class="col" th:each="etkinlik : ${etkinlikler}">
+                    <div class="card h-100">
+                        <img th:src="@{'/uploads/images/' + ${etkinlik.image}}" class="card-img-top" alt="Etkinlik">
+                        <div class="card-body text-center">
+                            <h6 class="card-title" th:text="${etkinlik.title}"></h6>
+                            <p class="text-muted" th:text="${#temporals.format(etkinlik.date, 'dd MMM yyyy')}"></p>
+                            <a th:href="@{'/etkinlikler/' + ${etkinlik.id}}" class="btn btn-sm btn-outline-secondary">İncele</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="/etkinlikler" class="btn btn-danger">Tüm Etkinlikler</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Yaklaşan Sınavlar</h2>
+        <table class="table table-striped text-center">
+            <thead>
+            <tr>
+                <th>Ders</th>
+                <th>Tarih</th>
+                <th>Saat</th>
+                <th>Sınav Türü</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="sinav : ${sinavlar}">
+                <td th:text="${sinav.course.name}"></td>
+                <td th:text="${#temporals.format(sinav.date, 'dd MMM yyyy')}"></td>
+                <td th:text="${sinav.time}"></td>
+                <td th:text="${sinav.type}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+</div>
+</body>
+</html>

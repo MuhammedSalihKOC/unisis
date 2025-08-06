@@ -81,14 +81,22 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         const form = document.querySelector("form");
-        if (form) {
-            form.addEventListener("submit", function (e) {
-                if (readonlyEmail.value.trim() === "") {
-                    e.preventDefault();
-                    alert("Lütfen bir e-posta seçiniz.");
-                }
-            });
+
+if (form) {
+    form.addEventListener("submit", function (e) {
+        if (readonlyEmail.value.trim() === "") {
+            e.preventDefault();
+            const alertDiv = document.querySelector(".alert");
+
+            if (alertDiv) {
+                alertDiv.querySelector("span").textContent = "Lütfen bir e-posta seçiniz.";
+                alertDiv.classList.remove("alert-success", "alert-warning");
+                alertDiv.classList.add("alert-danger");
+                alertDiv.style.display = "block";
+            }
         }
+    });
+}
     }
 
     const phoneInput = document.getElementById('number');

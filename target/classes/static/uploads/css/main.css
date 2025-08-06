@@ -2,6 +2,10 @@ body {
   font-family: "Nunito Sans", sans-serif !important;
     margin-top: 75px;
 }
+footer{
+    margin-top: 50px;
+}
+
 .bg-bordo {
     background-color: #8C373E;
 }
@@ -13,6 +17,10 @@ body {
 }
 .bg-bordo4{
     background-color: #f8d7da;
+}
+.img-fixed-400 {
+    height: 250px;
+    object-fit: cover;
 }
 .logo {
   height: 60px;

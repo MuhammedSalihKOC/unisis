@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.util.List;
 
 @Controller
@@ -31,8 +30,28 @@ public class StudentController {
         }
 
         model.addAttribute("courses", studentCourseService.getCoursesOfStudent(loggedInUser.getId()));
-        return "student-courses";
+        return "course/student-courses";
     }
+
+    @GetMapping("/dersler/kayit")
+    public String showDersKayitPage(Model model, HttpSession session) {
+        User student = (User) session.getAttribute("loggedInUser");
+        Long studentId = student.getId();
+        Long departmentId = student.getDepartment().getId();
+
+        List<Course> allCourses = courseService.getCoursesByDepartmentOrderBySemester(departmentId);
+        List<Long> registeredCourseIds = studentCourseService.getRegisteredCourseIds(studentId);
+        List<Course> registeredCourses = studentCourseService.getRegisteredCourses(studentId);
+        int totalCredits = studentCourseService.getTotalCredits(studentId);
+
+        model.addAttribute("allCourses", allCourses);
+        model.addAttribute("registeredCourseIds", registeredCourseIds);
+        model.addAttribute("registeredCourses", registeredCourses);
+        model.addAttribute("totalCredits", totalCredits);
+        model.addAttribute("pageTitle", "Ders Kayıt");
+        return "course/course-register";
+    }
+
     @PostMapping("/dersler/ekle/{id}")
     public String addCourse(@PathVariable("id") Long courseId,
                             HttpSession session,
@@ -61,23 +80,5 @@ public class StudentController {
         return "redirect:/dersler/kayit";
     }
 
-    @GetMapping("/dersler/kayit")
-    public String showDersKayitPage(Model model, HttpSession session) {
-        User student = (User) session.getAttribute("loggedInUser");
-        Long studentId = student.getId();
-        Long departmentId = student.getDepartment().getId();
-
-        List<Course> allCourses = courseService.getCoursesByDepartmentOrderBySemester(departmentId);
-        List<Long> registeredCourseIds = studentCourseService.getRegisteredCourseIds(studentId);
-        List<Course> registeredCourses = studentCourseService.getRegisteredCourses(studentId);
-        int totalCredits = studentCourseService.getTotalCredits(studentId);
-
-        model.addAttribute("allCourses", allCourses);
-        model.addAttribute("registeredCourseIds", registeredCourseIds);
-        model.addAttribute("registeredCourses", registeredCourses);
-        model.addAttribute("totalCredits", totalCredits);
-        model.addAttribute("pageTitle", "Ders Kayıt");
-        return "course-register";
-    }
 
 }

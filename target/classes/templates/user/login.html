@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{base}">
+      layout:decorate="~{shared/base}">
 <head><title>Giriş Yap - UNISIS</title></head>
 <body>
 <div class="container mt-5" layout:fragment="content">
@@ -19,11 +19,11 @@
         </div>
 
         <form action="/user/login" method="POST">
-            <div class="mb-3 text-start">
+            <div>
                 <label for="identifier" class="form-label">E-Posta veya Okul Numarası</label>
                 <input type="text" class="form-control" id="identifier" name="identifier" required>
             </div>
-            <div class="mb-3 text-start">
+            <div>
                 <label for="password" class="form-label">Şifre</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>

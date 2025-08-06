@@ -1,7 +1,6 @@
 package edu.estu.unisis.model;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -24,7 +23,6 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private List<StudentCourse> studentCourses;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
@@ -40,16 +38,8 @@ public class Course {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getCode() {
         return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
@@ -64,16 +54,8 @@ public class Course {
         return credit;
     }
 
-    public void setCredit(Double credit) {
-        this.credit = credit;
-    }
-
     public Integer getCapacity() {
         return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
     }
 
     public Department getDepartment() {
@@ -88,15 +70,7 @@ public class Course {
         return instructor;
     }
 
-    public void setInstructor(User instructor) {
-        this.instructor = instructor;
-    }
-
     public Integer getSemester() {
         return semester;
-    }
-
-    public void setSemester(Integer semester) {
-        this.semester = semester;
     }
 }

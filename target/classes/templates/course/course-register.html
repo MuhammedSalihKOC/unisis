@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{base}">
+      layout:decorate="~{shared/base}">
 <head>
     <title th:text="${pageTitle} + ' - UNISIS'">UNISIS</title>
 </head>
 <body>
 <div layout:fragment="content" class="container py-4">
 
-    <!-- Flash Mesajlar -->
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-    <!-- Başlık -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="mb-0" th:text="${pageTitle}">Ders Kayıt</h2>
         <div class="badge bg-bordo4 text-dark px-3 py-2" style="font-size: 1rem;">
             Toplam Kredi: <span th:text="${totalCredits}"></span> / 45
         </div>
     </div>
-    <!-- Mevcut Alınan Dersler -->
     <div class="card mb-4 shadow-sm">
         <div class="card-header bg-bordo3 text-white">
             Mevcut Alınan Dersler
@@ -56,9 +53,7 @@
     </div>
 
     <div class="text-end" id="courseCount">Toplam: <span th:text="${allCourses.size()}"></span> ders</div>
-    <!-- Filtreler -->
     <div class="row mb-3">
-        <!-- Departman Filtresi -->
         <div class="col-md-4">
             <span>Departman:</span>
             <select id="departmentFilter" class="form-select">
@@ -70,7 +65,6 @@
             </select>
         </div>
 
-        <!-- Yarıyıl Filtresi -->
         <div class="col-md-4">
             <span>Yarıyıl:</span>
             <select id="semesterFilter" class="form-select">
@@ -87,7 +81,6 @@
             </select>
         </div>
 
-        <!-- Arama Kutusu -->
         <div class="col-md-4">
             <span>Ara:</span>
             <div class="input-group">
@@ -97,7 +90,6 @@
         </div>
     </div>
 
-    <!-- Ders Tablosu -->
     <div class="card mb-4 shadow-sm">
         <div class="card-header bg-bordo3 text-white">
             Tüm Dersler
@@ -127,14 +119,12 @@
                 <td th:text="${course.semester == 9 ? 'Mesleki Seçmeli' : course.semester}"></td>
                 <td th:text="${course.instructor != null ? course.instructor.name : 'Atanmamış'}"></td>
                 <td class="text-center">
-                    <!-- Eğer kayıtlı ise "Çık" -->
                     <div th:if="${registeredCourseIds.contains(course.id)}">
                         <form th:action="@{/dersler/sil/{id}(id=${course.id})}" method="post"
                               style="display:inline;">
                             <button type="submit" class="btn btn-danger btn-sm">Sil</button>
                         </form>
                     </div>
-                    <!-- Değilse "Kayıt Ol" -->
                     <div th:unless="${registeredCourseIds.contains(course.id)}">
                         <form th:action="@{/dersler/ekle/{id}(id=${course.id})}" method="post"
                               style="display:inline;">
