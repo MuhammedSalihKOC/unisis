@@ -3,6 +3,7 @@ package edu.estu.unisis.service;
 import edu.estu.unisis.model.CourseExamWeight;
 import edu.estu.unisis.model.ExamType;
 import edu.estu.unisis.repository.CourseExamWeightRepository;
+import edu.estu.unisis.repository.ExamTypeRepository;
 import edu.estu.unisis.service.CourseExamWeightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,13 @@ import java.util.Optional;
 public class CourseExamWeightManager implements CourseExamWeightService {
 
     private final CourseExamWeightRepository courseExamWeightRepository;
+    private final ExamTypeRepository examTypeRepository;
+
 
     @Autowired
-    public CourseExamWeightManager(CourseExamWeightRepository courseExamWeightRepository) {
+    public CourseExamWeightManager(CourseExamWeightRepository courseExamWeightRepository, ExamTypeRepository examTypeRepository) {
         this.courseExamWeightRepository = courseExamWeightRepository;
+        this.examTypeRepository = examTypeRepository;
     }
 
     @Override
@@ -27,7 +31,7 @@ public class CourseExamWeightManager implements CourseExamWeightService {
     }
     @Override
     public List<ExamType> getExamTypesByCourseId(Long courseId) {
-        return courseExamWeightRepository.findExamTypesByCourseId(courseId);
+        return examTypeRepository.findExamTypesByCourseId(courseId);
     }
 
 }

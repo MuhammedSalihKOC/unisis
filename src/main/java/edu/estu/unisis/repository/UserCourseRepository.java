@@ -16,13 +16,9 @@ public interface UserCourseRepository extends JpaRepository<UserCourse, Long> {
             "LEFT JOIN FETCH uc.grades g " +
             "WHERE uc.course.id = :courseId")
     List<UserCourse> findByCourseIdWithUserAndGrades(@Param("courseId") Long courseId);
-
     @Query("SELECT uc FROM UserCourse uc JOIN FETCH uc.user WHERE uc.course.id = :courseId")
     List<UserCourse> findByCourseId(@Param("courseId") Long courseId);
-
-
     Optional<UserCourse> findByUserIdAndCourseId(Long userId, Long courseId);
-
     boolean existsByUserAndCourse(User user, Course course);
     @Query("SELECT sc.course FROM UserCourse sc WHERE sc.user.id = :userId")
     List<Course> findCoursesByUserId(@Param("userId") Long userId);

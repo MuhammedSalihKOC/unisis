@@ -5,13 +5,13 @@
 <body>
 <div layout:fragment="content" class="container py-4">
 
-    <div th:if="${session.loggedInUser.role.name != 'INSTRUCTOR'}">
+    <div th:if="${(course.instructor == null || session.loggedInUser.id != course.instructor.id) && session.loggedInUser.role.name != 'ADMIN'}">
         <div class="alert alert-danger text-center">
             Bu sayfaya yalnızca öğretmenler erişebilir.
         </div>
     </div>
 
-    <div th:if="${session.loggedInUser.role.name == 'INSTRUCTOR'}">
+    <div th:if="${(course.instructor != null && session.loggedInUser.id == course.instructor.id) || session.loggedInUser.role.name == 'ADMIN'}">
 
         <h2>Not Girişi</h2>
 

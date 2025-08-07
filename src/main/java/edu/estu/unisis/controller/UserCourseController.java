@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.Console;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,9 +41,11 @@ public class UserCourseController {
     @GetMapping("/dersler/kayit")
     public String showDersKayitPage(Model model, HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
+        if(!(user.getRole().getName().equals("STUDENT"))){
+            return "redirect:/";
+        }
         Long userId = user.getId();
         Long departmentId = user.getDepartment().getId();
-
         List<Course> allCourses = courseService.getCoursesByDepartmentOrderBySemester(departmentId);
         List<Course> registeredCourses = userCourseService.getRegisteredCourses(userId);
         List<Long> registeredCourseIds = registeredCourses.stream()

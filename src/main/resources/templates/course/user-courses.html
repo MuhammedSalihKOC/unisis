@@ -38,20 +38,20 @@
                 <td th:text="${course.credit}"></td>
                 <td th:text="${course.instructor != null ? course.instructor.name : 'Atanmamış'}"></td>
                 <td class="align-middle text-center">
-                    <th:block th:if="${session.loggedInUser.role.name == 'STUDENT'}">
-
-                        <button class="btn btn-sm btn-danger view-details"
-                                th:attr="data-code=${course.code},
+                    <button class="btn btn-sm btn-danger view-details"
+                            th:attr="data-code=${course.code},
              data-name=${course.name},
              data-credit=${course.credit},
              data-instructor=${course.instructor != null ? course.instructor.name : 'Atanmamış'},
              data-department=${course.department != null ? course.department.name : 'Atanmamış'},
              data-capacity=${course.capacity != null ? course.department.name : 'Atanmamış'},
              data-semester=${course.semester}">
-                            Detay
-                        </button>
+                        Detay
+                    </button>
+                    <th:block
+                            th:if="${session.loggedInUser != null and ((course.instructor != null and session.loggedInUser.id == course.instructor.id) or session.loggedInUser.role.name == 'ADMIN')}">
+                        <a class="btn btn-sm btn-danger" th:href="@{'/derslerim/notlar/' + ${course.id}}">Notlar</a>
                     </th:block>
-                    <a class="btn btn-sm btn-danger" th:href="@{'/derslerim/notlar/' + ${course.id}}">Notlar</a>
 
                 </td>
             </tr>

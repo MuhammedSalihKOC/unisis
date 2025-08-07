@@ -14,7 +14,6 @@ import java.util.Optional;
 public interface CourseExamWeightRepository extends JpaRepository<CourseExamWeight, Long> {
 
     Optional<CourseExamWeight> findByCourseIdAndExamTypeId(Long courseId, Long examTypeId);
-    @Query("SELECT cew.examType FROM CourseExamWeight cew WHERE cew.course.id = :courseId ORDER BY cew.examType.name DESC")
-    List<ExamType> findExamTypesByCourseId(@Param("courseId") Long courseId);
+
 
 }

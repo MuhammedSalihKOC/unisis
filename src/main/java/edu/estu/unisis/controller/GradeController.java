@@ -33,7 +33,8 @@ public class GradeController {
         this.courseExamWeightService = courseExamWeightService;
     }
     @GetMapping("/{courseId}")
-    public String showEditCourseForm(@PathVariable Long courseId, Model model) {
+    public String showCourseForm(@PathVariable Long courseId, Model model) {
+        Optional<Course> course = courseService.getById(courseId);
         List<ExamType> examTypes = courseExamWeightService.getExamTypesByCourseId(courseId);
         List<UserCourse> userCourses = userCourseService.getByCourseId(courseId);
 
@@ -58,7 +59,7 @@ public class GradeController {
             }
             userGradeMap.put(userId, gradeMap);
         }
-
+        model.addAttribute("course", course.get());
         model.addAttribute("examTypes", examTypes);
         model.addAttribute("userCourses", userCourses);
         model.addAttribute("userGradeMap", userGradeMap);
@@ -66,7 +67,44 @@ public class GradeController {
         model.addAttribute("letterGrades", letterGrades);
         model.addAttribute("pageTitle", "Notlar");
 
-        return "course/grade";
+        return "course/course-student";
+    }
+    @GetMapping("/{courseId}/duzenle")
+    public String showEditCourseForm(@PathVariable Long courseId, Model model) {
+        Optional<Course> course = courseService.getById(courseId);
+        List<ExamType> examTypes = courseExamWeightService.getExamTypesByCourseId(courseId);
+        List<UserCourse> userCourses = userCourseService.getByCourseId(courseId);
+
+        Map<Long, Map<Long, Grade>> userGradeMap = new HashMap<>();
+        Map<Long, Double> weightedAverages = new HashMap<>();
+        Map<Long, String> letterGrades = new HashMap<>();
+
+        for (UserCourse uc : userCourses) {
+            Long userId = uc.getUser().getId();
+
+            Double average = gradeService.calculateWeightedAverage(uc.getGrades(), courseId);
+            if (average != null) {
+                weightedAverages.put(userId, average);
+                letterGrades.put(userId, gradeService.getLetterGrade(average));
+            }
+
+            Map<Long, Grade> gradeMap = new HashMap<>();
+            for (Grade grade : uc.getGrades()) {
+                if (grade.getExamType() != null) {
+                    gradeMap.put(grade.getExamType().getId(), grade);
+                }
+            }
+            userGradeMap.put(userId, gradeMap);
+        }
+        model.addAttribute("course", course.get());
+        model.addAttribute("examTypes", examTypes);
+        model.addAttribute("userCourses", userCourses);
+        model.addAttribute("userGradeMap", userGradeMap);
+        model.addAttribute("weightedAverages", weightedAverages);
+        model.addAttribute("letterGrades", letterGrades);
+        model.addAttribute("pageTitle", "Notlar");
+
+        return "course/course-student-grade";
     }
 
     @PostMapping("/guncelle")
@@ -76,7 +114,6 @@ public class GradeController {
         try {
             for (String paramKey : allParams.keySet()) {
                 if (paramKey.startsWith("grades[")) {
-                    // Örn: grades[5][1]
                     String[] parts = paramKey.substring(7, paramKey.length() - 1).split("\\]\\[");
                     Long userId = Long.parseLong(parts[0]);
                     Long examTypeId = Long.parseLong(parts[1]);
@@ -96,8 +133,5 @@ public class GradeController {
 
         return "redirect:/derslerim/notlar/" + courseId;
     }
-
-
-
 
 }
