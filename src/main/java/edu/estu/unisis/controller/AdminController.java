@@ -1,13 +1,7 @@
 package edu.estu.unisis.controller;
 
-import edu.estu.unisis.model.Course;
-import edu.estu.unisis.model.Department;
-import edu.estu.unisis.model.Role;
-import edu.estu.unisis.model.User;
-import edu.estu.unisis.service.CourseService;
-import edu.estu.unisis.service.DepartmentService;
-import edu.estu.unisis.service.RoleService;
-import edu.estu.unisis.service.UserService;
+import edu.estu.unisis.model.*;
+import edu.estu.unisis.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Controller
@@ -27,16 +22,18 @@ public class AdminController {
     private final DepartmentService departmentService;
     private final RoleService roleService;
     private final CourseService courseService;
+    private final SystemSettingService systemSettingService;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public AdminController(UserService userService, DepartmentService departmentService, RoleService roleService, CourseService courseService, PasswordEncoder passwordEncoder) {
+    public AdminController(UserService userService, DepartmentService departmentService, RoleService roleService, CourseService courseService, PasswordEncoder passwordEncoder, SystemSettingService systemSettingService) {
         this.userService = userService;
         this.departmentService = departmentService;
         this.roleService = roleService;
         this.courseService = courseService;
         this.passwordEncoder = passwordEncoder;
+        this.systemSettingService = systemSettingService;
     }
 
     @GetMapping("/{rolePath}")
@@ -298,4 +295,34 @@ public class AdminController {
                 return null;
         }
     }
+    @GetMapping("/panel")
+    public String showPanel(Model model) {
+        List<SystemSetting> settings = systemSettingService.getAllSettings();
+        model.addAttribute("settings", settings);
+        model.addAttribute("settingTitles", Map.of(
+                "registration_open", "Ders Kaydı",
+                "feedback_enabled", "Geri Bildirim",
+                "document_request_active", "Belge Talebi",
+                "club_announcements_open", "Kulüp Duyuruları",
+                "maintenance_mode", "Bakım Modu",
+                "event_registration_enabled", "Etkinlik Kaydı",
+                "profile_edit_allowed", "Profil Düzenleme",
+                "exam_schedule_visible", "Sınav Takvimi",
+                "show_home_slider", "Anasayfa Slaytı",
+                "enable_notifications", "Sistem Bildirimleri"
+        ));
+        return "panel";
+    }
+    @PostMapping("/admin/settings/update")
+    public String updateSettings(@RequestParam("keys") List<String> keys,
+                                 @RequestParam("values") List<String> values,
+                                 RedirectAttributes redirectAttributes) {
+        for (int i = 0; i < keys.size(); i++) {
+            systemSettingService.updateValue(keys.get(i), values.get(i));
+        }
+        redirectAttributes.addFlashAttribute("success", "Ayarlar başarıyla güncellendi.");
+        return "redirect:/panel";
+    }
+
+
 }

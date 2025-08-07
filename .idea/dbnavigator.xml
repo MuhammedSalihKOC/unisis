@@ -20,7 +20,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="6b035e24-d8d1-4d8e-9cfa-a1c0514e9413">
-      <console name="Connection" type="STANDARD" schema="" session="Main" />
+      <console name="Connection" type="STANDARD" schema="mysql" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -31,6 +31,9 @@
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="6b035e24-d8d1-4d8e-9cfa-a1c0514e9413" />
+  </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />

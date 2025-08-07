@@ -31,6 +31,19 @@
     </ul>
     <ul th:if="${session.loggedInUser != null}" class="nav nav-pills flex-column">
 
+        <li class="nav-item py-2 px-0 fw-bold">SİSTEM YÖNETİMİ</li>
+        <li class="nav-item">
+            <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+               data-bs-toggle="collapse" data-bs-target="#sidebarSystemSettings" aria-expanded="false">
+                <span><i class="bi bi-gear"></i> Sistem Ayarları</span>
+                <i class="bi bi-chevron-right"></i>
+            </a>
+            <div class="collapse" id="sidebarSystemSettings">
+                <ul class="nav flex-column ms-3">
+                    <li class="nav-item"><a href="/panel" class="nav-link">Panel</a></li>
+                </ul>
+            </div>
+        </li>
         <!-- 1. Kullanıcı Yönetimi -->
         <li class="nav-item py-2 px-0 fw-bold">KULLANICI YÖNETİMİ</li>
         <li class="nav-item">
