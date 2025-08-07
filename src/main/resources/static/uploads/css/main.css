@@ -1,6 +1,9 @@
 body {
   font-family: "Nunito Sans", sans-serif !important;
-    margin-top: 75px;
+    margin-top: 150px;
+}
+body.less-margin-top {
+    margin-top: 75px !important;
 }
 footer{
     margin-top: 50px;

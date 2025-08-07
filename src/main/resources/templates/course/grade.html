@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shared/base}">
+<body>
+<div layout:fragment="content" class="container py-4">
+
+    <div th:if="${session.loggedInUser.role.name != 'INSTRUCTOR'}">
+        <div class="alert alert-danger text-center">
+            Bu sayfaya yalnızca öğretmenler erişebilir.
+        </div>
+    </div>
+
+    <div th:if="${session.loggedInUser.role.name == 'INSTRUCTOR'}">
+
+        <h2>Not Girişi</h2>
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <form th:action="@{/derslerim/notlar/guncelle}" method="post">
+            <input type="hidden" name="courseId" th:value="${courseId}"/>
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Öğrenci</th>
+                    <th th:each="et : ${examTypes}" th:text="${et.name}"></th>
+                    <th>Ortalama</th>
+                    <th>Harf Notu</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="uc, iterStat : ${userCourses}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${uc.user.name}"></td>
+
+                    <td th:each="et : ${examTypes}">
+                        <input type="number" min="0" max="100" step="0.01"
+                               th:name="'grades[' + ${uc.user.id} + '][' + ${et.id} + ']'"
+                               th:value="${userGradeMap[uc.user.id][et.id]?.grade}"/>
+                    </td>
+
+                    <td th:if="${weightedAverages[uc.user.id] != null}"
+                        th:text="${#numbers.formatDecimal(weightedAverages[uc.user.id], 1, 2)}">Ortalama
+                    </td>
+                    <td th:unless="${weightedAverages[uc.user.id] != null}">-</td>
+                    <td th:text="${letterGrades[uc.user.id] ?: '-'}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success">Notları Kaydet</button>
+            </div>
+        </form>
+
+
+    </div>
+
+</div>
+</body>
+</html>

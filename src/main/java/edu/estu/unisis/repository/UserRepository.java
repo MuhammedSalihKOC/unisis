@@ -4,7 +4,10 @@ import edu.estu.unisis.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    boolean existsByEmail(String email);
+    User findUserById(Long id);
+    User findBySchoolNumber(String schoolNumber);
     User findByEmail(String email);
-    User findBySchoolNumber(String email);
+    boolean existsByEmail(String email);
+
+
 }

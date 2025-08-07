@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head th:replace="shared/fragments/head :: head"></head>
+<head th:replace="~{shared/fragments/head :: head}"></head>
 <body>
-<header th:replace="shared/fragments/navbar :: navbar"></header>
+<header th:replace="~{shared/fragments/navbar :: navbar}"></header>
 
 <main layout:fragment="content">
 </main>
 
-<footer th:replace="shared/fragments/footer :: footer"></footer>
-<script th:replace="shared/fragments/scripts :: scripts"></script>
+<footer th:replace="~{shared/fragments/footer :: footer}"></footer>
+<script th:replace="~{shared/fragments/scripts :: scripts}"></script>
 </body>
 </html>

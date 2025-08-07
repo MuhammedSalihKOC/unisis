@@ -31,7 +31,8 @@ public class AuthController {
     }
 
     @GetMapping("/giris")
-    public String loginPage() {
+    public String loginPage(Model model) {
+        model.addAttribute("pageTitle", "Giriş Yap");
         return "user/login";
     }
 
@@ -41,6 +42,7 @@ public class AuthController {
         User user = new User();
         user.setDepartment(new Department());
         model.addAttribute("user", user);
+        model.addAttribute("pageTitle", "Okul Kaydı");
         return "user/register";
     }
 
@@ -104,7 +106,8 @@ public class AuthController {
                         RedirectAttributes redirectAttributes) {
 
         User user = userService.authenticate(identifier, password);
-
+        System.out.println("Rol nesnesi: " + user.getRole());
+        System.out.println("Rol ismi: " + (user.getRole() != null ? user.getRole().getName() : "Role null"));
         if (user != null) {
             session.setAttribute("loggedInUser", user);
             return "redirect:/";

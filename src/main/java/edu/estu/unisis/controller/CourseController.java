@@ -27,7 +27,7 @@ public class CourseController {
 
     @GetMapping("/dersler/{id}")
     public String showEditCourseForm(@PathVariable Long id, Model model) {
-        Course course = courseService.getCourseById(id)
+        Course course = courseService.getById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Ders bulunamadı: " + id));
         model.addAttribute("course", course);
         model.addAttribute("pageTitle", "Dersler");

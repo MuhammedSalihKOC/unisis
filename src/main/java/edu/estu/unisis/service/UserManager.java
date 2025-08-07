@@ -19,15 +19,19 @@ public class UserManager implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     @Override
-    public void save(User user) {
-        userRepository.save(user);
+    public User getById(Long id) {
+        return userRepository.findUserById(id);
     }
 
     @Override
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     @Override

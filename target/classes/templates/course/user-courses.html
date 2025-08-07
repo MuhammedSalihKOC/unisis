@@ -2,9 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{shared/base}">
-
-<head><title>Derslerim - UNISIS</title></head>
-
 <body>
 <div layout:fragment="content" class="container py-4">
     <div th:if="${message}" th:text="${message}" class="alert" th:classappend="' alert-' + ${messageType}"></div>
@@ -41,16 +38,20 @@
                 <td th:text="${course.credit}"></td>
                 <td th:text="${course.instructor != null ? course.instructor.name : 'Atanmamış'}"></td>
                 <td class="align-middle text-center">
-                    <button class="btn btn-sm btn-danger view-details"
-                            th:attr="data-code=${course.code},
+                    <th:block th:if="${session.loggedInUser.role.name == 'STUDENT'}">
+
+                        <button class="btn btn-sm btn-danger view-details"
+                                th:attr="data-code=${course.code},
              data-name=${course.name},
              data-credit=${course.credit},
              data-instructor=${course.instructor != null ? course.instructor.name : 'Atanmamış'},
              data-department=${course.department != null ? course.department.name : 'Atanmamış'},
              data-capacity=${course.capacity != null ? course.department.name : 'Atanmamış'},
              data-semester=${course.semester}">
-                        Detay
-                    </button>
+                            Detay
+                        </button>
+                    </th:block>
+                    <a class="btn btn-sm btn-danger" th:href="@{'/derslerim/notlar/' + ${course.id}}">Notlar</a>
 
                 </td>
             </tr>
@@ -73,9 +74,7 @@
                         <p><strong>Kontenjan:</strong> <span id="modal-capacity"></span></p>
                         <p><strong>Yarıyıl:</strong> <span id="modal-semester"></span></p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                    </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
                 </div>
             </div>
         </div>

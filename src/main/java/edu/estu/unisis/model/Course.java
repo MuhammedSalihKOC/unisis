@@ -21,7 +21,7 @@ public class Course {
     private Integer capacity;
 
     @OneToMany(mappedBy = "course")
-    private List<StudentCourse> studentCourses;
+    private List<UserCourse> userCours;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", nullable = false)

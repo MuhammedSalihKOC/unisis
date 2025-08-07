@@ -12,20 +12,19 @@
 
             <div class="collapse navbar-collapse" id="navbarMenu">
                 <ul class="navbar-nav ms-auto">
+                    <th:block th:if="${session.loggedInUser != null}">
 
-                    <!-- Oturum açılmışsa profil -->
-                    <li th:if="${session.loggedInUser != null}" class="nav-item">
-                        <a class="nav-link" th:href="@{/dersler/kayit}">Ders Kayıt</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/dersler/kayit}">Ders Kayıt</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/derslerim}">Derslerim</a>
+                        </li>
 
-                    <li th:if="${session.loggedInUser != null}" class="nav-item">
-                        <a class="nav-link" th:href="@{/derslerim}">Derslerim</a>
-                    </li>
-
-                    <li th:if="${session.loggedInUser != null}" class="nav-item">
-                        <a class="nav-link" th:href="@{/profil}">Profil</a>
-                    </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/profil}">Profil</a>
+                        </li>
+                    </th:block>
                     <li th:if="${session.loggedInUser == null}" class="nav-item">
                         <a class="nav-link" th:href="@{/giris}">Giriş</a>
                     </li>

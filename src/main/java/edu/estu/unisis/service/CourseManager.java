@@ -1,6 +1,7 @@
 package edu.estu.unisis.service;
 
 import edu.estu.unisis.model.Course;
+import edu.estu.unisis.model.User;
 import edu.estu.unisis.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,23 @@ public class CourseManager implements CourseService {
     }
 
     @Override
+    public Optional<Course> getById(Long id) {
+        return courseRepository.findById(id);
+    }
+
+    @Override
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
 
     @Override
-    public Optional<Course> getCourseById(Long id) {
-        return courseRepository.findById(id);
+    public List<Course> getCoursesByDepartmentOrderBySemester(Long departmentId) {
+        return courseRepository.findByDepartmentIdOrderBySemesterAsc(departmentId);
+    }
+
+    @Override
+    public List<Course> getCoursesByInstructor(User instructor) {
+        return courseRepository.findByInstructor(instructor);
     }
 
     @Override
@@ -41,9 +52,4 @@ public class CourseManager implements CourseService {
     public void deleteCourse(Long id) {
         courseRepository.deleteById(id);
     }
-    @Override
-    public List<Course> getCoursesByDepartmentOrderBySemester(Long departmentId) {
-        return courseRepository.findByDepartmentIdOrderBySemesterAsc(departmentId);
-    }
-
 }

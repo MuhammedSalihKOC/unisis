@@ -13,8 +13,9 @@ public class UserController {
     @GetMapping("/profil")
     public String profilePage(HttpSession session, Model model) {
         User user = (User) session.getAttribute("loggedInUser");
-
         model.addAttribute("user", user);
+        model.addAttribute("pageTitle", "Profil");
+
         return "user/profile";
     }
 }
