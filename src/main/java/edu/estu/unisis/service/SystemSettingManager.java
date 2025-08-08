@@ -16,8 +16,6 @@ public class SystemSettingManager implements SystemSettingService {
     @Override
     public boolean isEnabled(String key) {
         Optional<SystemSetting> result = systemSettingRepository.findBySettingKey(key);
-        System.out.println(result.get());
-        System.out.println("DEBUG: result = " + result);
         return result.map(setting -> "true".equalsIgnoreCase(setting.getSettingValue().trim()))
                 .orElse(false);
     }

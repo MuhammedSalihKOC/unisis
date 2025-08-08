@@ -12,8 +12,17 @@ import java.util.Optional;
 
 @Repository
 public interface CourseExamWeightRepository extends JpaRepository<CourseExamWeight, Long> {
-
     Optional<CourseExamWeight> findByCourseIdAndExamTypeId(Long courseId, Long examTypeId);
-
-
+    @Query("SELECT COALESCE(SUM(cew.weightPercentage), 0) " +
+            "FROM CourseExamWeight cew " +
+            "WHERE cew.course.id = :courseId")
+    Double sumWeightByCourseId(@Param("courseId") Long courseId);
+    List<CourseExamWeight> findByCourseId(Long courseId);
+    @Query("""
+           select w
+           from CourseExamWeight w
+           where w.course.id = :courseId
+           order by w.examType.name asc
+           """)
+    List<CourseExamWeight> findByCourseIdOrderByExamTypeName(Long courseId);
 }

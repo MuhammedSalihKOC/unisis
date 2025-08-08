@@ -4,7 +4,11 @@
 <head th:replace="~{shared/fragments/head :: head}"></head>
 <body>
 <header th:replace="~{shared/fragments/navbar :: navbar}"></header>
-
+<div class="container">
+    <div th:if="${success}" id="success" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" id="error" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${warning}"id="warning" class="alert alert-warning" th:text="${warning}"></div>
+</div>
 <main layout:fragment="content">
 </main>
 

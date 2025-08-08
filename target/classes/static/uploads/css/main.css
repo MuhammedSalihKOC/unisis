@@ -8,7 +8,17 @@ body.less-margin-top {
 footer{
     margin-top: 50px;
 }
-
+.input-error {
+  border: 2px solid #f44336 !important;
+  outline: none !important;
+}
+.error-message {
+  display: none;
+  color: #f44336;
+  font-size: 0.85rem;
+  position: absolute;
+  top: 100%;
+}
 .bg-bordo {
     background-color: #8C373E;
 }

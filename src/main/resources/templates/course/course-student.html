@@ -13,10 +13,21 @@
 
   <div th:if="${(course.instructor != null && session.loggedInUser.id == course.instructor.id) || session.loggedInUser.role.name == 'ADMIN'}">
 
+    <h2>Sınav Ağırlıkları</h2>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th th:each="et : ${examTypes}" th:text="${et.name}"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td th:each="ew: ${examWeights}"><label type="number" min="0" max="100" step="0.01"
+                                                th:text="${ew.weightPercentage}"></label></td>
+      </tr>
+      </tbody>
+    </table>
     <h2>Not Girişi</h2>
-
-    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <form th:action="@{'/derslerim/notlar/' + ${course.id} + '/duzenle'}" method="get">
       <input type="hidden" name="courseId" th:value="${courseId}"/>

@@ -12,16 +12,17 @@ public class CourseExamWeight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exam_type_id", nullable = false)
     private ExamType examType;
 
     @Column(name = "weight_percentage", nullable = false)
     private Double weightPercentage;
+
 
     public CourseExamWeight() {
     }

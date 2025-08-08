@@ -1,10 +1,16 @@
 package edu.estu.unisis.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "grades")
+@Table(
+        name = "grades",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_course_id", "exam_type_id"})
+        }
+)
 public class Grade {
 
     @Id

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -31,24 +32,23 @@ public class GradeManager implements GradeService {
 
     public Double calculateWeightedAverage(List<Grade> grades, Long courseId) {
         if (grades == null || grades.isEmpty()) return null;
-
-        double totalWeighted = 0.0;
-        double totalWeight = 0.0;
-
-        for (Grade grade : grades) {
-            if (grade.getExamType() != null && grade.getGrade() != null) {
-                Long examTypeId = grade.getExamType().getId();
-                Double weight = courseExamWeightService.getWeightPercentage(courseId, examTypeId);
-
-                if (weight != null) {
-                    totalWeighted += grade.getGrade() * weight;
-                    totalWeight += weight;
-                }
+        Map<Long, Double> weights = courseExamWeightService.getWeightsByCourseAsMap(courseId);
+        for (Long examTypeId : weights.keySet()) {
+            boolean exists = grades.stream().anyMatch(g ->
+                    g.getExamType() != null &&
+                            g.getExamType().getId().equals(examTypeId) &&
+                            g.getGrade() != null
+            );
+            if (!exists) {
+                return null;
             }
         }
-
-        if (totalWeight == 0.0) return null;
-        return totalWeighted / totalWeight;
+        double totalWeighted = 0.0;
+        for (Grade g : grades) {
+            Double w = weights.get(g.getExamType().getId());
+            totalWeighted += g.getGrade() * w;
+        }
+        return totalWeighted / 100.0;
     }
     @Override
     public String getLetterGrade(Double average) {
@@ -67,7 +67,7 @@ public class GradeManager implements GradeService {
     }
     @Override
     public void saveOrUpdateGrade(Long userId, Long courseId, Long examTypeId, Double gradeValue) {
-        Optional<Grade> existing = gradeRepository.findByUserCourseAndExamType(userId, courseId, examTypeId);
+        Optional<Grade> existing = gradeRepository.findByUserCourseUserIdAndUserCourseCourseIdAndExamTypeId(userId, courseId, examTypeId);
 
         Grade grade;
         if (existing.isPresent()) {

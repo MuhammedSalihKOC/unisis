@@ -4,10 +4,6 @@
       layout:decorate="~{shared/base}">
 <body>
 <div layout:fragment="content" class="container py-4">
-
-    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="mb-0" th:text="${pageTitle}">Ders Kayıt</h2>
         <div class="badge bg-bordo4 text-dark px-3 py-2" style="font-size: 1rem;">

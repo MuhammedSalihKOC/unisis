@@ -39,10 +39,12 @@ public class AuthController {
     @GetMapping("/kayit")
     public String registerPage(Model model) {
         model.addAttribute("departments", departmentService.getAllDepartments());
-        User user = new User();
-        user.setDepartment(new Department());
-        model.addAttribute("user", user);
         model.addAttribute("pageTitle", "Okul Kaydı");
+        if (!model.containsAttribute("name"))          model.addAttribute("name", "");
+        if (!model.containsAttribute("email"))         model.addAttribute("email", "");
+        if (!model.containsAttribute("schoolNumber"))  model.addAttribute("schoolNumber", "");
+        if (!model.containsAttribute("number"))        model.addAttribute("number", "");
+        if (!model.containsAttribute("departmentId"))  model.addAttribute("departmentId", null);
         return "user/register";
     }
 
@@ -57,15 +59,8 @@ public class AuthController {
                                @RequestParam("receipt") MultipartFile receipt,
                                RedirectAttributes redirectAttributes) {
 
-        if (!password.equals(passwordConfirm)) {
-            redirectAttributes.addFlashAttribute("message", "Şifreler uyuşmuyor!");
-            redirectAttributes.addFlashAttribute("messageType", "danger");
-            return "redirect:/kayit";
-        }
-
         if (userService.existsByEmail(email)) {
-            redirectAttributes.addFlashAttribute("message", "Bu e-posta zaten kullanılıyor.");
-            redirectAttributes.addFlashAttribute("messageType", "danger");
+            redirectAttributes.addFlashAttribute("error", "Bu e-posta zaten kullanılıyor.");
             return "redirect:/kayit";
         }
 
@@ -84,17 +79,14 @@ public class AuthController {
                 byte[] fileBytes = receipt.getBytes();
                 user.setReceipt(fileBytes);
             } catch (IOException e) {
-                redirectAttributes.addFlashAttribute("message", "Dosya yüklenemedi.");
-                redirectAttributes.addFlashAttribute("messageType", "danger");
+                redirectAttributes.addFlashAttribute("error", "Dosya yüklenemedi.");
                 ;
                 return "redirect:/kayit";
             }
         }
 
         userService.save(user);
-
-        redirectAttributes.addFlashAttribute("message", "Başvurunuz başarıyla oluşturuldu. Kaydınızın tamamlanabilmesi için yetkili onayı gerekmektedir..");
-        redirectAttributes.addFlashAttribute("messageType", "success");
+        redirectAttributes.addFlashAttribute("success", "Başvurunuz başarıyla oluşturuldu. Kaydınızın tamamlanabilmesi için yetkili onayı gerekmektedir..");
         return "redirect:/giris";
 
     }
@@ -112,8 +104,7 @@ public class AuthController {
             session.setAttribute("loggedInUser", user);
             return "redirect:/";
         } else {
-            redirectAttributes.addFlashAttribute("message", "Giriş bilgileri hatalı. Lütfen tekrar deneyiniz.");
-            redirectAttributes.addFlashAttribute("messageType", "danger");
+            redirectAttributes.addFlashAttribute("error", "Giriş bilgileri hatalı. Lütfen tekrar deneyiniz.");
             return "redirect:/giris";
         }
     }
@@ -121,8 +112,7 @@ public class AuthController {
     @GetMapping("user/logout")
     public String logout(HttpSession session, RedirectAttributes redirectAttributes) {
         session.invalidate();
-        redirectAttributes.addFlashAttribute("message", "Oturumunuz sonlandırıldı.");
-        redirectAttributes.addFlashAttribute("messageType", "warning");
+        redirectAttributes.addFlashAttribute("warning", "Oturumunuz sonlandırıldı.");
         return "redirect:/giris";
     }
 }

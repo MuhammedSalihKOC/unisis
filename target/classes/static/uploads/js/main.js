@@ -1,4 +1,64 @@
 document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById('registerForm');
+  const password = document.getElementById('password');
+  const passwordConfirm = document.getElementById('password_confirm');
+  const passwordError = document.getElementById('passwordError');
+
+  const selectedEmail = document.getElementById('selectedEmail');
+  const readonlyEmail = document.getElementById('readonlyEmail');
+  const emailError = document.getElementById('emailError');
+
+  function checkPasswords() {
+    if (passwordConfirm.value === '') {
+      passwordError.style.display = 'none';
+      passwordConfirm.classList.remove('input-error');
+      return true;
+    }
+    if (password.value !== passwordConfirm.value) {
+      passwordError.style.display = 'block';
+      passwordConfirm.classList.add('input-error');
+      return false;
+    } else {
+      passwordError.style.display = 'none';
+      passwordConfirm.classList.remove('input-error');
+      return true;
+    }
+  }
+
+  function checkEmail() {
+    if (!selectedEmail.value || selectedEmail.value.trim() === '') {
+      emailError.style.display = 'block';
+      readonlyEmail.classList.add('input-error');
+      return false;
+    } else {
+      emailError.style.display = 'none';
+      readonlyEmail.classList.remove('input-error');
+      return true;
+    }
+  }
+
+  password.addEventListener('input', checkPasswords);
+  passwordConfirm.addEventListener('input', checkPasswords);
+
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      const emailValid = checkEmail();
+      const passwordsValid = checkPasswords();
+
+      if (!emailValid) {
+        e.preventDefault();
+        readonlyEmail.focus();
+        readonlyEmail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (!passwordsValid) {
+        e.preventDefault();
+        passwordConfirm.focus();
+        passwordConfirm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
 
     const generateBtn = document.getElementById("generateEmailBtn");
     const nameInput = document.getElementById("name");
@@ -24,22 +84,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const rawName = nameInput.value.trim();
             const safeName = replaceTurkishChars(rawName);
             const parts = safeName.split(" ").filter(Boolean);
-
+            const warning = document.getElementById("nameWarning");
+            if (warning) {
+                warning.style.display = "none";
+            }
             if (parts.length < 2) {
-                const warning = document.getElementById("nameWarning");
                 if (warning) {
                     warning.style.display = "block";
-                    warning.style.opacity = "1";
-
-                    clearTimeout(warning._fadeTimeout);
-                    clearTimeout(warning._hideTimeout);
-
-                    warning._fadeTimeout = setTimeout(() => {
-                        warning.style.opacity = "0";
-                        warning._hideTimeout = setTimeout(() => {
-                            warning.style.display = "none";
-                        }, 600);
-                    }, 2000);
                 }
                 return;
             }
@@ -79,25 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
             readonlyEmail.value = options[0];
             selectedEmail.value = options[0];
         });
-
-        const form = document.querySelector("form");
-
-if (form) {
-    form.addEventListener("submit", function (e) {
-        if (readonlyEmail.value.trim() === "") {
-            e.preventDefault();
-            const alertDiv = document.querySelector(".alert");
-
-            if (alertDiv) {
-                alertDiv.querySelector("span").textContent = "Lütfen bir e-posta seçiniz.";
-                alertDiv.classList.remove("alert-success", "alert-warning");
-                alertDiv.classList.add("alert-danger");
-                alertDiv.style.display = "block";
-            }
-        }
-    });
 }
-    }
 
     const phoneInput = document.getElementById('number');
     if (phoneInput) {
