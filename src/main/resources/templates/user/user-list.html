@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shared/base}">
+<head><title th:text="${pageTitle} + ' - UNISIS'">UNISIS</title></head>
+<body>
+<div layout:fragment="content" class="container py-4">
+    <div th:if="${message}" th:text="${message}" class="alert" th:classappend="' alert-' + ${messageType}"></div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0" th:text="${pageTitle}">Kullanıcılar</h2>
+        <span th:text="'Toplam: ' + ${users.size()} + ' ' + ${roleLabel}"></span>
+    </div>
+    <div class="input-group mb-3" style="max-width: 250px;">
+        <input type="text" id="searchInput" class="form-control" placeholder="Ara...">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+    </div>
+    <div class="table-responsive">
+        <table id="userTable" class="table table-hover table-bordered align-middle rounded shadow-sm">
+            <thead class="table-danger">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col"><a href="#" onclick="sortTable('userTable', 1); return false;"
+                                   class="text-dark text-decoration-none">İsim</a></th>
+
+                <th scope="col" th:if="${rolePath != 'yoneticiler'}">
+                    <a href="#" onclick="sortTable('userTable', 2); return false;" class="text-dark text-decoration-none">Bölüm</a>
+                </th>
+                <th scope="col">
+                    <a href="#" onclick="sortTable('userTable', 3); return false;" class="text-dark text-decoration-none">Email</a>
+
+                </th>
+                <th scope="col" th:if="${rolePath == 'ogrenciler'}">
+                    <a href="#" onclick="sortTable('userTable', 4); return false;" class="text-dark text-decoration-none">Okul No</a>
+
+                </th>
+                <th class="align-middle text-center" scope="col">İşlem</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user, iter : ${users}">
+                <td th:text="${iter.index + 1}"></td>
+                <td><span class="fw-semibold" th:text="${user.name}"></span></td>
+                <td th:text="${user.department.name}" th:if="${rolePath != 'yoneticiler'}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.schoolNumber}" th:if="${rolePath == 'ogrenciler'}"></td>
+                <td class="align-middle text-center">
+                    <a class="btn btn-sm btn-danger"
+                       th:href="@{'/' + ${rolePath} + '/' + ${user.id}}">Detaylar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

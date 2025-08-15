@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shared/base}">
+<head>
+    <title th:text="${pageTitle} + ' - UNISIS'">UNISIS</title>
+</head>
+<body>
+<div layout:fragment="content" class="container py-4">
+    <div th:if="${message}" th:text="${message}" class="alert" th:classappend="' alert-' + ${messageType}"></div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0" th:text="${pageTitle}">Dersler</h2>
+        <span id="courseCount">Toplam: 0 ders</span>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <span>Departman:</span>
+            <select id="departmentFilter" class="form-select">
+                <option value="">Tümü (Bölümler)</option>
+                <option th:each="dep : ${departments}"
+                        th:value="${dep.id}"
+                        th:text="${dep.name}">
+                </option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <span>Yarıyıl:</span>
+            <select id="semesterFilter" class="form-select">
+                <option value="">Tümü</option>
+                <option value="mesleki">Mesleki Seçmeli</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+            </select>
+        </div>
+
+        <!-- Arama -->
+        <div class="col-md-4">
+            <span>Ara:</span>
+            <div class="input-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Ders ara...">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ders Tablosu -->
+    <div class="table-responsive">
+        <table id="courseTable" class="table table-hover table-bordered align-middle rounded shadow-sm">
+            <thead class="table-danger">
+            <tr>
+                <th>#</th>
+                <th><a href="#" onclick="sortTable('courseTable', 1); return false;" class="text-dark text-decoration-none">Ders Adı</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 2); return false;" class="text-dark text-decoration-none">Ders Kodu</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 3); return false;" class="text-dark text-decoration-none">Bölüm</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 4); return false;" class="text-dark text-decoration-none">Kredi</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 5); return false;" class="text-dark text-decoration-none">Yarıyıl</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 6); return false;" class="text-dark text-decoration-none">Eğitmen</a></th>
+                <th><a href="#" onclick="sortTable('courseTable', 7); return false;" class="text-dark text-decoration-none">Kontenjan</a></th>
+                <th class="text-center">İşlem</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="course, iter : ${courses}"
+                th:data-department="${course.department != null ? course.department.id : ''}"
+                th:data-semester="${course.semester != null ? course.semester : ''}">
+                <td th:text="${iter.index + 1}"></td>
+                <td><span class="course-name fw-semibold" th:text="${course.name}"></span></td>
+                <td class="course-code" th:text="${course.code}"></td>
+                <td th:text="${course.department != null ? course.department.name : 'Atanmamış'}"></td>
+                <td th:text="${course.credit != null ? course.credit : 'Atanmamış'}"></td>
+                <td th:text="${course.semester == 9 ? 'Mesleki Seçmeli' : course.semester}"></td>
+                <td th:text="${course.instructor != null ? course.instructor.name : 'Atanmamış'}"></td>
+                <td th:text="${course.capacity != null ? course.capacity : 'Atanmamış'}"></td>
+                <td class="align-middle text-center">
+                    <a class="btn btn-sm btn-danger"
+                       th:href="@{'/dersler/' + ${course.id}}">Düzenle</a>
+                </td>
+            </tr>
+            <tr id="noResultsMessage" style="display:none;">
+                <td colspan="9" class="text-center text-muted">
+                    Arama ve filtrelere uygun ders bulunamadı.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

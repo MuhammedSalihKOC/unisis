@@ -74,19 +74,19 @@ public class UserManager implements UserService {
     public List<User> getAllStudentsSorted(String sortField, String sortDir) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equalsIgnoreCase("asc") ? sort.ascending() : sort.descending();
-        return userRepository.findAllStudentsSorted(sort);
+        return userRepository.findAllByRoleName("STUDENT", sort);
     }
     @Override
     public List<User> getAllInstructorsSorted(String sortField, String sortDir) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equalsIgnoreCase("asc") ? sort.ascending() : sort.descending();
-        return userRepository.findAllInstructorsSorted(sort);
+        return userRepository.findAllByRoleName("INSTRUCTOR", sort);
     }
     @Override
     public List<User> getAllAdminsSorted(String sortField, String sortDir) {
         Sort sort = Sort.by(sortField);
         sort = sortDir.equalsIgnoreCase("asc") ? sort.ascending() : sort.descending();
-        return userRepository.findAllAdminsSorted(sort);
+        return userRepository.findAllByRoleName("ADMIN", sort);
     }
     @Override
     public void deleteById(Long id){

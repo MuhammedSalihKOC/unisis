@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shared/base}">
+<head>
+    <title th:text="${pageTitle} + ' - UNISIS'">UNISIS</title>
+</head>
+<body>
+<div layout:fragment="content" class="container py-4">
+    <h2 th:text="${pageTitle}">Ders Ekle</h2>
+    <form th:action="@{/dersler/ekle}" th:object="${course}" method="post" class="row g-3">
+        <div class="col-md-6">
+            <label for="code" class="form-label">Ders Kodu</label>
+            <input type="text" th:field="*{code}" id="code" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+            <label for="name" class="form-label">Ders Adı</label>
+            <input type="text" th:field="*{name}" id="name" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+            <label for="department" class="form-label">Bölüm</label>
+            <select th:field="*{department.id}" id="department" class="form-select" required>
+                <option value="">Seçiniz</option>
+                <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label for="credit" class="form-label">Kredi</label>
+            <input type="number" min="1" max="15" th:field="*{credit}" id="credit" class="form-control" required>
+        </div>
+
+        <div class="col-md-6">
+            <label for="semester" class="form-label">Yarıyıl</label>
+            <select th:field="*{semester}" id="semester" class="form-select" required>
+                <option value="">Seçiniz</option>
+                <option value="1">1. Yarıyıl</option>
+                <option value="2">2. Yarıyıl</option>
+                <option value="3">3. Yarıyıl</option>
+                <option value="4">4. Yarıyıl</option>
+                <option value="5">5. Yarıyıl</option>
+                <option value="6">6. Yarıyıl</option>
+                <option value="7">7. Yarıyıl</option>
+                <option value="8">8. Yarıyıl</option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-success">Kaydet</button>
+            <a href="/dersler" class="btn btn-secondary ms-2">Vazgeç</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

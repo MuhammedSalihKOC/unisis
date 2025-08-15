@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shared/base}">
+<head><title th:text="${pageTitle} + ' Düzenle - UNISIS'">UNISIS</title></head>
+<body>
+<div layout:fragment="content" class="container py-4">
+  <div class="mb-4">
+    <h2 th:text="${pageTitle + ' Düzenle'}">Kullanıcı Düzenle</h2>
+  </div>
+  <form th:action="@{'/' + ${rolePath} + '/' + ${user.id} + '/duzenle'}"
+        th:object="${user}" method="post" class="row g-3">
+    <div class="col-md-6">
+      <label for="name" class="form-label">İsim</label>
+      <label type="text" id="name" th:text="*{name}" class="form-control" required></label>
+    </div>
+    <div th:if="${rolePath == 'ogrenciler' or rolePath == 'egitmenler'}" class="col-md-6">
+      <label for="department" class="form-label">Bölüm</label>
+      <label id="department" th:text="*{department.name}" class="form-control" required></label>
+    </div>
+    <div class="col-md-6">
+      <label for="email" class="form-label">E-posta</label>
+      <label type="email" id="email" th:text="*{email}" class="form-control" required></label>
+    </div>
+    <div th:if="${rolePath == 'ogrenciler' or rolePath == 'egitmenler'}" class="col-md-6">
+      <label for="schoolNumber" class="form-label">Okul No</label>
+      <label type="text" id="schoolNumber" th:text="*{schoolNumber}" class="form-control" maxlength="11"
+             pattern="^\d{11}$"></label>
+    </div>
+    <div th:if="${rolePath == 'ogrenciler' or rolePath == 'egitmenler'}" class="col-md-6">
+      <label for="phoneNumber" class="form-label">Telefon Numarası</label>
+      <label type="text" id="phoneNumber" th:text="*{phoneNumber}" class="form-control" maxlength="17"
+             required
+             placeholder="0 (5__) ___ __ __"></label>
+    </div>
+    <div th:if="${rolePath == 'ogrenciler' or rolePath == 'egitmenler'}" class="col-md-6">
+      <label class="form-label">Dekont (Dosya)</label>
+      <div th:if="${user.receipt != null}">
+        <small class="text-success">Daha önce yüklenmiş bir dosya var.</small>
+      </div>
+      <div th:if="${user.receipt == null}">
+        <small class="text-danger">Daha önce yüklenmiş bir dosya yok.</small>
+      </div>
+    </div>
+  </form>
+  <div class="col-12 text-end mt-3">
+      <a th:href="@{'/' + ${rolePath} + '/' + ${user.id} + '/duzenle'}" class="btn btn-bordo2" th:text="${pageTitle + ' düzenle'}"></a>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="navbar">
+    <nav class="content d-flex justify-content-between px-3 py-2 shadow-sm mb-3 bg-bordo fixed-top">
+        <ul class="nav">
+            <li class="nav-item">
+                <button class="btn p-1" id="sidebar-btn" onclick="toggleNav()"><i
+                        class="bi bi-list fs-4 text-white"></i></button>
+            </li>
+        </ul>
+        <ul class="nav">
+            <li th:if="${session.loggedInUser != null}" class="nav-item">
+                <button type="button" class="btn" data-bs-toggle="dropdown"><i
+                        class="bi bi-person fs-5 text-white"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a href="/profil" class="dropdown-item"
+                           type="button">Hesap</a></li>
+                    <li><a href="user/logout" class="dropdown-item text-danger"
+                           type="button">Çıkış Yap</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>
+</html>

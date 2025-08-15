@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="aside">
+    <aside id="mySidebar" class="sidebar">
+        <button id="closeSidebarBtn" class="btn btn-close btn-close-white d-lg-none"
+                style="position: absolute; top: 20px; right: 20px;"></button>
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <a href="/">
+                <img class="logo" href src="https://obs.eskisehir.edu.tr/resources/images/estusmlogo.png" alt="">
+                <span>Admin Yönetim Paneli</span>
+            </a>
+        </div>
+        <ul th:if="${session.loggedInUser == null}" class="nav nav-pills flex-column">
+            Lütfen panele erişmek için önce giriş yapın.
+        </ul>
+        <ul th:if="${session.loggedInUser != null}" class="nav nav-pills flex-column">
+
+            <li class="nav-item py-2 px-0 fw-bold">SİSTEM YÖNETİMİ</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarSystemSettings" aria-expanded="false">
+                    <span><i class="bi bi-gear"></i> Sistem Ayarları</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarSystemSettings">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/panel" class="nav-link">Panel</a></li>
+                    </ul>
+                </div>
+            </li>
+            <!-- 1. Kullanıcı Yönetimi -->
+            <li class="nav-item py-2 px-0 fw-bold">KULLANICI YÖNETİMİ</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarUsers" aria-expanded="false">
+                    <span><i class="bi bi-person-lines-fill"></i> Öğrenciler</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarUsers">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/ogrenciler" class="nav-link">Tüm Öğrencileri Listele</a></li>
+                        <li class="nav-item"><a href="/ogrenciler/ekle" class="nav-link">Yeni Öğrenci Ekle</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarTeachers" aria-expanded="false">
+                    <span><i class="bi bi-person-badge"></i> Öğretmenler</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarTeachers">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/egitmenler" class="nav-link">Tüm Öğretmenleri Listele</a></li>
+                        <li class="nav-item"><a href="/egitmenler/ekle" class="nav-link">Yeni Öğretmen Ekle</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarAdmins" aria-expanded="false">
+                    <span><i class="bi bi-person-gear"></i> Yöneticiler</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarAdmins">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/yoneticiler" class="nav-link">Tüm Yöneticileri Listele</a></li>
+                        <li class="nav-item"><a href="/yoneticiler/ekle" class="nav-link">Yeni Yönetici Ekle</a></li>
+                    </ul>
+                </div>
+            </li>
+            <hr>
+
+            <!-- 2. Ders / Program Yönetimi -->
+            <li class="nav-item py-2 px-0 fw-bold">DERS / PROGRAM YÖNETİMİ</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarCourses" aria-expanded="false">
+                    <span><i class="bi bi-book"></i> Dersler</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarCourses">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/dersler" class="nav-link">Tüm Dersleri Listele</a></li>
+                        <li class="nav-item"><a href="/dersler/ekle" class="nav-link">Yeni Ders Ekle</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- 3. Kulüp & Etkinlik Yönetimi -->
+            <li class="nav-item py-2 px-0 fw-bold">KULÜP & ETKİNLİK YÖNETİMİ</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarClubs" aria-expanded="false">
+                    <span><i class="bi bi-people"></i> Kulüpler</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarClubs">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/kulupler" class="nav-link">Kulüpleri Listele</a></li>
+                        <li class="nav-item"><a href="/kulup-ekle" class="nav-link">Yeni Kulüp Oluştur</a></li>
+                        <li class="nav-item"><a href="/kulup-uyelik-basvurular" class="nav-link">Üyelik Başvuruları</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarEvents" aria-expanded="false">
+                    <span><i class="bi bi-calendar-event"></i> Etkinlikler</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarEvents">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/aktif-etkinlikler" class="nav-link">Aktif Etkinlikler</a></li>
+                        <li class="nav-item"><a href="/gecmis-etkinlikler" class="nav-link">Geçmiş Etkinlikler</a></li>
+                        <li class="nav-item"><a href="/etkinlik-ekle" class="nav-link">Yeni Etkinlik Oluştur</a></li>
+                    </ul>
+                </div>
+            </li>
+            <hr>
+
+            <!-- 4. Sınav & Not Yönetimi -->
+            <li class="nav-item py-2 px-0 fw-bold">SINAV & NOT YÖNETİMİ</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarExams" aria-expanded="false">
+                    <span><i class="bi bi-journal-check"></i> Sınavlar</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarExams">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/sinavlar" class="nav-link">Tüm Sınavlar</a></li>
+                        <li class="nav-item"><a href="/sinav-ekle" class="nav-link">Yeni Sınav Oluştur</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarGrades" aria-expanded="false">
+                    <span><i class="bi bi-clipboard-data"></i> Notlar</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarGrades">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/notlar" class="nav-link">Not Listesi</a></li>
+                        <li class="nav-item"><a href="/not-ekle-duzenle" class="nav-link">Not Ekle/Düzenle</a></li>
+                    </ul>
+                </div>
+            </li>
+            <hr>
+
+            <!-- 5. Belge Talepleri & İşlemler -->
+            <li class="nav-item py-2 px-0 fw-bold">BELGE TALEPLERİ & İŞLEMLERİ</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarDocs" aria-expanded="false">
+                    <span><i class="bi bi-file-earmark-text"></i> Belge Talepleri</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarDocs">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/talepler" class="nav-link">Talepleri Görüntüle</a></li>
+                        <li class="nav-item"><a href="/belge-turler" class="nav-link">Belge Türleri</a></li>
+                    </ul>
+                </div>
+            </li>
+            <hr>
+
+            <!-- 6. Duyuru & Haberler -->
+            <li class="nav-item py-2 px-0 fw-bold">DUYURU & HABERLER</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarAnnouncements" aria-expanded="false">
+                    <span><i class="bi bi-megaphone"></i> Duyurular</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarAnnouncements">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/duyurular" class="nav-link">Genel Duyurular</a></li>
+                        <li class="nav-item"><a href="/kulup-duyurular" class="nav-link">Kulüp Duyuruları</a></li>
+                    </ul>
+                </div>
+            </li>
+            <hr>
+
+            <!-- 7. İletişim ve Geri Bildirim -->
+            <li class="nav-item py-2 px-0 fw-bold">GERİ BİLDİRİM / İLETİŞİM</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarFeedback" aria-expanded="false">
+                    <span><i class="bi bi-envelope"></i> Gelen Mesajlar</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarFeedback">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/mesajlar" class="nav-link">Öğrenci/Öğretmen Mesajları</a></li>
+                        <li class="nav-item"><a href="/iletisim-formlar" class="nav-link">İletişim Formları</a></li>
+                    </ul>
+                </div>
+            </li>
+            <hr>
+
+            <!-- 8. Raporlar & Ayarlar -->
+            <li class="nav-item py-2 px-0 fw-bold">AYARLAR & RAPORLAR</li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarReports" aria-expanded="false">
+                    <span><i class="bi bi-graph-up"></i> Raporlar</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarReports">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/kullanici-raporlar" class="nav-link">Kullanıcı Raporları</a></li>
+                        <li class="nav-item"><a href="/ders-kulup-etkinlik-raporlar" class="nav-link">Ders/Kulüp/Etkinlik
+                            Raporları</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex justify-content-between align-items-center"
+                   data-bs-toggle="collapse" data-bs-target="#sidebarSettings" aria-expanded="false">
+                    <span><i class="bi bi-gear"></i> Site Ayarları</span>
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+                <div class="collapse" id="sidebarSettings">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item"><a href="/genel-ayarlar" class="nav-link">Genel Ayarlar</a></li>
+                        <li class="nav-item"><a href="/tema-logo" class="nav-link">Tema ve Logo</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </aside>
+</div>
+</html>

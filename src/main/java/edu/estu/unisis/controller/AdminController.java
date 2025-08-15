@@ -80,11 +80,32 @@ public class AdminController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
-        return "user-list";
+        return "user/user-list";
     }
 
-
     @GetMapping("/{rolePath}/{id}")
+    public String showUserDetailForm(@PathVariable String rolePath, @PathVariable Long id, Model model) {
+        User user = userService.getById(id);
+        List<Department> departments = departmentService.getAllDepartments();
+        String pageTitle = "";
+        String roleLabel = "";
+        String role = "";
+
+        RoleInfo info = getRoleInfo(rolePath);
+        if (info == null) {
+            return "error/404";
+        }
+        model.addAttribute("pageTitle", info.pageTitle);
+        model.addAttribute("roleLabel", info.roleLabel);
+        model.addAttribute("role", info.role);
+        model.addAttribute("user", user);
+        model.addAttribute("rolePath", rolePath);
+        model.addAttribute("departments", departments);
+
+        return "user/user-details";
+    }
+
+    @GetMapping("/{rolePath}/{id}/duzenle")
     public String showUserEditForm(@PathVariable String rolePath, @PathVariable Long id, Model model) {
         User user = userService.getById(id);
         List<Department> departments = departmentService.getAllDepartments();
@@ -103,7 +124,7 @@ public class AdminController {
         model.addAttribute("rolePath", rolePath);
         model.addAttribute("departments", departments);
 
-        return "user-edit";
+        return "user/user-edit";
     }
 
     @PostMapping("/{rolePath}/{id}/duzenle")
@@ -162,7 +183,7 @@ public class AdminController {
         User user = new User();
         user.setDepartment(new Department());
         model.addAttribute("user", user);
-        return "user-add";
+        return "user/user-add";
     }
 
     @PostMapping("/{rolePath}/ekle")
@@ -190,10 +211,9 @@ public class AdminController {
                 user.setDepartment(dept);
             }
 
-            user.getRoles().clear();
             Role role = roleService.getRoleByName(info.role);
             if (role != null) {
-                user.getRoles().add(role);
+                user.setRole(role);
             }
 
             userService.save(user);
@@ -215,7 +235,7 @@ public class AdminController {
         model.addAttribute("departments", departments);
         model.addAttribute("courses", courses);
         model.addAttribute("pageTitle", "Dersler");
-        return "course-list";
+        return "course/course-list";
     }
 
     @GetMapping("/dersler/{id}")
@@ -230,7 +250,7 @@ public class AdminController {
         model.addAttribute("departments", departments);
         model.addAttribute("instructors", instructors);
         model.addAttribute("pageTitle", "Dersler");
-        return "course-edit";
+        return "course/course-edit";
     }
 
     @PostMapping("/dersler/{id}/edit")
@@ -254,7 +274,7 @@ public class AdminController {
         model.addAttribute("course", new Course());
         model.addAttribute("departments", departmentService.getAllDepartments());
         model.addAttribute("pageTitle", "Ders Ekle");
-        return "course-add";
+        return "course/course-add";
     }
 
     @PostMapping("/dersler/ekle")
@@ -311,7 +331,7 @@ public class AdminController {
                 "show_home_slider", "Anasayfa Slaytı",
                 "enable_notifications", "Sistem Bildirimleri"
         ));
-        return "panel";
+        return "home/panel";
     }
     @PostMapping("/admin/settings/update")
     public String updateSettings(@RequestParam("keys") List<String> keys,

@@ -1,6 +1,12 @@
 body {
   font-family: "Nunito Sans", sans-serif !important;
-  margin-top: 100px;
+    margin-top: 150px;
+}
+body.less-margin-top {
+    margin-top: 75px !important;
+}
+footer{
+    margin-top: 50px;
 }
 th {
     white-space: nowrap;
@@ -9,8 +15,6 @@ th {
   line-height: 1.1;
   white-space: normal;
 }
-
-
 main.content {
     margin-bottom: 70px;
 }
@@ -25,6 +29,18 @@ main.content {
 }
 .bg-bordo4{
     background-color: #f8d7da;
+}
+.btn-bordo {
+  background-color: #8C373E;
+  color: #fff;
+}
+.btn-bordo2{
+    background-color: #b54545;
+    color: #fff;
+}
+.btn-bordo2:hover {
+  background-color: #8C373E;
+  color: #fff;
 }
 .logo {
   height: 60px;
@@ -44,7 +60,7 @@ aside.sidebar .logo {
 aside.sidebar .nav .nav-item .nav-link {
     padding: 12px 17px;
 }
-.nav .nav-item .btn:hover {
+.nav .nav-item .btn:x"" {
     background-color: #b54545;
 }
 aside.sidebar .nav .nav-item .nav-link:hover {
