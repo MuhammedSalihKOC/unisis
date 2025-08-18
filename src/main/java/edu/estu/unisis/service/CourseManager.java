@@ -18,6 +18,9 @@ public class CourseManager implements CourseService {
         this.courseRepository = courseRepository;
     }
 
+    public List<Course> getAll(){
+        return courseRepository.findAll();
+    }
     @Override
     public List<Course> getAllCoursesSorted(String sortField, String sortDir) {
         Sort sort = Sort.by(sortField);

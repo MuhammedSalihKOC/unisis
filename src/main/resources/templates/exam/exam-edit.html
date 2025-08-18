@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shared/base}">
+<head>
+  <title th:text="${pageTitle + ' Düzenle - UNISIS'}">UNISIS</title>
+</head>
+<body>
+<div layout:fragment="content" class="container py-4">
+  <div class="mb-4">
+    <h2 th:text="${pageTitle + ' Düzenle'}">Sınav Düzenle</h2>
+  </div>
+
+  <form th:action="@{'/sinavlar/' + ${exam.id} + '/duzenle'}"
+        th:object="${exam}" method="post" class="row g-3">
+
+    <div class="col-md-6">
+      <label for="course" class="form-label">Ders</label>
+      <select id="course" th:field="*{course.id}" class="form-select" required>
+        <option value="">Seçiniz</option>
+        <option th:each="c : ${courses}"
+                th:value="${c.id}"
+                th:text="${c.name}"
+                th:selected="${exam.course != null and c.id == exam.course.id}">
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-6">
+      <label for="examType" class="form-label">Sınav Tipi</label>
+      <select id="examType" th:field="*{examType.id}" class="form-select" required>
+        <option value="">Seçiniz</option>
+        <option th:each="t : ${examTypes}"
+                th:value="${t.id}"
+                th:text="${t.name}"
+                th:selected="${exam.examType != null and t.id == exam.examType.id}">
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-6">
+      <label for="examDatetime" class="form-label">Sınav Tarihi ve Saati</label>
+      <input type="datetime-local" id="examDatetime"
+             th:field="*{examDatetime}"
+             class="form-control" required>
+    </div>
+
+    <div class="col-md-6">
+      <label for="location" class="form-label">Konum</label>
+      <input type="text" id="location" th:field="*{location}" class="form-control" maxlength="120">
+    </div>
+
+    <div class="col-md-6">
+      <label for="notes" class="form-label">Notlar</label>
+      <textarea id="notes" th:field="*{notes}" class="form-control" rows="2" maxlength="255"></textarea>
+    </div>
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-success">Kaydet</button>
+      <a th:href="@{'/sinavlar'}" class="btn btn-secondary ms-2">İptal</a>
+    </div>
+  </form>
+
+  <div class="col-12 text-end mt-3">
+    <form th:action="@{'/sinavlar/' + ${exam.id} + '/sil'}" method="post"
+          onsubmit="return confirm('Bu sınavı silmek istediğinize emin misiniz?');"
+          style="display: inline;">
+      <button type="submit" class="btn btn-danger">Sınavı Sil</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

@@ -6,7 +6,7 @@
 <body>
 <div layout:fragment="content" class="container py-4">
   <div class="mb-4">
-    <h2 th:text="${pageTitle + ' Düzenle'}">Kullanıcı Düzenle</h2>
+    <h2 th:text="${pageTitle}"></h2>
   </div>
   <form th:action="@{'/' + ${rolePath} + '/' + ${user.id} + '/duzenle'}"
         th:object="${user}" method="post" class="row g-3">

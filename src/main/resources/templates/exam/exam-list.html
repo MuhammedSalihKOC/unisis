@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shared/base}">
+<head>
+  <title th:text="${pageTitle} + ' - UNISIS'">UNISIS</title>
+</head>
+<body>
+<div layout:fragment="content" class="container py-4">
+
+  <div th:if="${message}" th:text="${message}" class="alert" th:classappend="' alert-' + ${messageType}"></div>
+  <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+  <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0" th:text="${pageTitle != null ? pageTitle : 'Sınavlar'}">Sınavlar</h2>
+  </div>
+  <div class="mb-3">
+    <span id="examCount">Toplam: <span th:text="${#lists.size(exams)}">0</span> sınav</span>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <span>Bölüm:</span>
+      <select id="departmentFilter" class="form-select">
+        <option value="">Tümü (Bölümler)</option>
+        <option th:each="d : ${departments}"
+                th:value="${d.id}"
+                th:text="${d.name}"
+                th:selected="${d.id == selectedDepartmentId}">
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-3">
+      <span>Sınav Tipi:</span>
+      <select id="examTypeFilter" class="form-select">
+        <option value="">Tümü</option>
+        <option th:each="t : ${examTypes}" th:value="${t.id}" th:text="${t.name}"></option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <span>Ara:</span>
+      <div class="input-group">
+        <input type="text" id="searchInput" class="form-control" placeholder="Sınav ara...">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table id="examTable" class="table table-hover table-bordered align-middle rounded shadow-sm">
+      <thead class="table-danger">
+      <tr>
+        <th>#</th>
+        <th><a href="#" onclick="sortTable('examTable', 1); return false;" class="text-dark text-decoration-none">Ders</a></th>
+        <th><a href="#" onclick="sortTable('examTable', 2); return false;" class="text-dark text-decoration-none">Ders Kodu</a></th>
+        <th>Bölüm</th>
+        <th>Eğitmen</th>
+        <th>Sınav Tipi</th>
+        <th>Tarih &amp; Saat</th>
+        <th>Konum</th>
+        <th class="text-center">İşlem</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="exam, iter : ${exams}"
+          th:attr="data-department-id=${exam.course.department.id},
+             data-type-id=${exam.examType.id}">
+        <td th:text="${iter.index + 1}"></td>
+        <td th:text="${exam.course != null ? exam.course.name : '—'}"></td>
+        <td th:text="${exam.course != null ? exam.course.code : '—'}"></td>
+        <td th:text="${exam.course != null && exam.course.department != null ? exam.course.department.name : 'Atanmamış'}"></td>
+        <td th:text="${exam.course != null && exam.course.instructor != null ? exam.course.instructor.name : 'Atanmamış'}"></td>
+        <td th:text="${exam.examType != null ? exam.examType.name : '—'}"></td>
+        <td th:text="${exam.examDatetime != null ? #temporals.format(exam.examDatetime, 'dd.MM.yyyy HH:mm') : '—'}"></td>
+        <td th:text="${exam.location != null ? exam.location : '—'}"></td>
+        <td class="align-middle text-center">
+          <a class="btn btn-sm btn-danger"
+             th:href="@{'/sinavlar/' + ${exam.id} + '/duzenle'}">Düzenle</a>
+        </td>
+      </tr>
+      <tr id="noResultsMessage" style="display:none;">
+        <td colspan="9" class="text-center text-muted">Arama ve filtrelere uygun sınav bulunamadı.</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

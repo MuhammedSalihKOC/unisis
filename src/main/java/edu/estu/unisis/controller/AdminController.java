@@ -95,7 +95,7 @@ public class AdminController {
         if (info == null) {
             return "error/404";
         }
-        model.addAttribute("pageTitle", info.pageTitle);
+        model.addAttribute("pageTitle", info.pageTitle + " Detayları");
         model.addAttribute("roleLabel", info.roleLabel);
         model.addAttribute("role", info.role);
         model.addAttribute("user", user);
@@ -117,7 +117,7 @@ public class AdminController {
         if (info == null) {
             return "error/404";
         }
-        model.addAttribute("pageTitle", info.pageTitle);
+        model.addAttribute("pageTitle", info.pageTitle + " Düzenle");
         model.addAttribute("roleLabel", info.roleLabel);
         model.addAttribute("role", info.role);
         model.addAttribute("user", user);
@@ -133,7 +133,8 @@ public class AdminController {
             @PathVariable Long id,
             @ModelAttribute("user") User user,
             @RequestParam(value = "receipt", required = false) MultipartFile receipt,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            Model model
     ) {
         try {
             if (receipt != null && !receipt.isEmpty()) {
@@ -175,7 +176,7 @@ public class AdminController {
         if (info == null) {
             return "error/404";
         }
-        model.addAttribute("pageTitle", info.pageTitle);
+        model.addAttribute("pageTitle", info.pageTitle + " Ekle");
         model.addAttribute("roleLabel", info.roleLabel);
         model.addAttribute("role", info.role);
         model.addAttribute("rolePath", rolePath);
@@ -249,7 +250,7 @@ public class AdminController {
         model.addAttribute("course", course);
         model.addAttribute("departments", departments);
         model.addAttribute("instructors", instructors);
-        model.addAttribute("pageTitle", "Dersler");
+        model.addAttribute("pageTitle", course.getName());
         return "course/course-edit";
     }
 
@@ -260,6 +261,7 @@ public class AdminController {
         }
         updatedCourse.setId(id);
         courseService.updateCourse(updatedCourse);
+        model.addAttribute("pageTitle", updatedCourse.getName());
         return "redirect:/dersler";
     }
 
@@ -318,6 +320,7 @@ public class AdminController {
     @GetMapping("/panel")
     public String showPanel(Model model) {
         List<SystemSetting> settings = systemSettingService.getAllSettings();
+        model.addAttribute("pageTitle", "Panel");
         model.addAttribute("settings", settings);
         model.addAttribute("settingTitles", Map.of(
                 "registration_open", "Ders Kaydı",

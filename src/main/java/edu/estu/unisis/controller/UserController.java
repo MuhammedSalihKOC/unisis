@@ -1,6 +1,5 @@
 package edu.estu.unisis.controller;
 
-import edu.estu.unisis.model.Department;
 import edu.estu.unisis.model.User;
 import edu.estu.unisis.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -9,12 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.IOException;
 
 @Controller
 public class UserController {
@@ -27,12 +22,14 @@ public class UserController {
     }
 
     @GetMapping("/giris")
-    public String loginPage() {
+    public String loginPage(Model model) {
+        model.addAttribute("pageTitle", "Giriş Yap");
         return "user/login";
     }
 
     @GetMapping("/kayit")
-    public String registerPage() {
+    public String registerPage(Model model) {
+        model.addAttribute("pageTitle", "Kayıt Ol");
         return "user/register";
     }
 
@@ -64,7 +61,7 @@ public class UserController {
     @GetMapping("/profil")
     public String profilePage(HttpSession session, Model model) {
         User user = (User) session.getAttribute("loggedInUser");
-
+        model.addAttribute("pageTitle", "Profil");
         if (user == null) {
             return "redirect:/user/login";
         }
