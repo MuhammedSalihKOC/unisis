@@ -1,8 +1,10 @@
 package edu.estu.unisis.controller;
 
 import edu.estu.unisis.model.Department;
+import edu.estu.unisis.model.Role;
 import edu.estu.unisis.model.User;
 import edu.estu.unisis.service.DepartmentService;
+import edu.estu.unisis.service.RoleService;
 import edu.estu.unisis.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,16 @@ public class AuthController {
 
     private final UserService userService;
     private final DepartmentService departmentService;
+    private final RoleService roleService;
+
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthController(UserService userService, DepartmentService departmentService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService, DepartmentService departmentService, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userService = userService;
         this.departmentService = departmentService;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @GetMapping("/giris")
@@ -70,6 +75,8 @@ public class AuthController {
         user.setSchoolNumber(schoolNumber);
         user.setPassword(passwordEncoder.encode(password));
         user.setPhoneNumber(number);
+        Role studentRole = roleService.getRoleByName("STUDENT");
+        user.setRole(studentRole);
         Department department = departmentService.getDepartmentById(departmentId);
         user.setDepartment(department);
 

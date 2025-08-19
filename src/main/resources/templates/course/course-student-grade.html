@@ -19,17 +19,15 @@
 
             <table class="table table-bordered">
                 <thead>
-                <tr>
+                <tr class="align-middle text-center">
                     <th th:each="et : ${examTypes}" th:text="${et.name}"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td th:each="et : ${examTypes}"
+                    <td th:each="et : ${examTypes}" class="align-middle text-center"
                         th:with="w=${#maps.containsKey(examWeightsMap, et.id) ? examWeightsMap[et.id] : null}">
-                        <!-- examTypeId -->
                         <input type="hidden" name="examTypeIds" th:value="${et.id}"/>
-                        <!-- ağırlık -->
                         <input type="number" min="0" max="100" step="0.01" name="weights"
                                th:value="${w != null ? w.weightPercentage : ''}">
                     </td>

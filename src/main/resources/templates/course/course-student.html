@@ -5,68 +5,70 @@
 <body>
 <div layout:fragment="content" class="container py-4">
 
-  <div th:if="${(course.instructor == null || session.loggedInUser.id != course.instructor.id) && session.loggedInUser.role.name != 'ADMIN'}">
-    <div class="alert alert-danger text-center">
-      Bu sayfaya yalnızca öğretmenler erişebilir.
+    <div th:if="${(course.instructor == null || session.loggedInUser.id != course.instructor.id) && session.loggedInUser.role.name != 'ADMIN'}">
+        <div class="alert alert-danger text-center">
+            Bu sayfaya yalnızca öğretmenler erişebilir.
+        </div>
     </div>
-  </div>
 
-  <div th:if="${(course.instructor != null && session.loggedInUser.id == course.instructor.id) || session.loggedInUser.role.name == 'ADMIN'}">
+    <div th:if="${(course.instructor != null && session.loggedInUser.id == course.instructor.id) || session.loggedInUser.role.name == 'ADMIN'}">
 
-    <h2>Sınav Ağırlıkları</h2>
-    <table class="table table-bordered">
-      <thead>
-      <tr>
-        <th th:each="et : ${examTypes}" th:text="${et.name}"></th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td th:each="ew: ${examWeights}"><label type="number" min="0" max="100" step="0.01"
-                                                th:text="${ew.weightPercentage}"></label></td>
-      </tr>
-      </tbody>
-    </table>
-    <h2>Not Girişi</h2>
+        <h2>Sınav Ağırlıkları</h2>
+        <table class="table table-bordered">
+            <thead>
+            <tr class="align-middle text-center">
+                <th th:each="et : ${examTypes}" th:text="${et.name}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:each="et : ${examTypes}" class="align-middle text-center"
+                    th:with="w=${#maps.containsKey(examWeightsMap, et.id) ? examWeightsMap[et.id] : null}">
+                    <label type="hidden" name="examTypeIds" th:text="${w.weightPercentage}"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <h2>Not Girişi</h2>
 
-    <form th:action="@{'/derslerim/notlar/' + ${course.id} + '/duzenle'}" method="get">
-      <input type="hidden" name="courseId" th:value="${courseId}"/>
+        <form th:action="@{'/derslerim/notlar/' + ${course.id} + '/duzenle'}" method="get">
+            <input type="hidden" name="courseId" th:value="${courseId}"/>
 
-      <table class="table table-bordered">
-        <thead>
-        <tr>
-          <th>#</th>
-          <th>Öğrenci</th>
-          <th th:each="et : ${examTypes}" th:text="${et.name}"></th>
-          <th>Ortalama</th>
-          <th>Harf Notu</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="uc, iterStat : ${userCourses}">
-          <td th:text="${iterStat.index + 1}"></td>
-          <td th:text="${uc.user.name}"></td>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Öğrenci</th>
+                    <th th:each="et : ${examTypes}" th:text="${et.name}"></th>
+                    <th>Ortalama</th>
+                    <th>Harf Notu</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="uc, iterStat : ${userCourses}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${uc.user.name}"></td>
 
-          <td th:each="et : ${examTypes}">
-            <label th:text="${userGradeMap[uc.user.id][et.id]?.grade}"/>
-          </td>
+                    <td th:each="et : ${examTypes}">
+                        <label th:text="${userGradeMap[uc.user.id][et.id]?.grade}"/>
+                    </td>
 
-          <td th:if="${weightedAverages[uc.user.id] != null}"
-              th:text="${#numbers.formatDecimal(weightedAverages[uc.user.id], 1, 2)}">Ortalama
-          </td>
-          <td th:unless="${weightedAverages[uc.user.id] != null}">-</td>
-          <td th:text="${letterGrades[uc.user.id] ?: '-'}"></td>
-        </tr>
-        </tbody>
-      </table>
+                    <td th:if="${weightedAverages[uc.user.id] != null}"
+                        th:text="${#numbers.formatDecimal(weightedAverages[uc.user.id], 1, 2)}">Ortalama
+                    </td>
+                    <td th:unless="${weightedAverages[uc.user.id] != null}">-</td>
+                    <td th:text="${letterGrades[uc.user.id] ?: '-'}"></td>
+                </tr>
+                </tbody>
+            </table>
 
-      <div class="text-end">
-        <button type="submit" class="btn btn-success">Notları Düzenle</button>
-      </div>
-    </form>
+            <div class="text-end">
+                <button type="submit" class="btn btn-success">Düzenle</button>
+            </div>
+        </form>
 
 
-  </div>
+    </div>
 
 </div>
 </body>

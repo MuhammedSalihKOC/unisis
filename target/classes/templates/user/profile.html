@@ -9,7 +9,14 @@
         <p><strong>Ad Soyad:</strong> <span th:text="${user.name}"></span></p>
         <p><strong>E-Posta:</strong> <span th:text="${user.email}"></span></p>
         <p><strong>Okul Numarası:</strong> <span th:text="${user.schoolNumber}"></span></p>
-        <p><strong>Rol:</strong> <span th:text="${user.role.name}"></span></p>
+        <p><strong>Rol:</strong>
+            <span th:switch="${user.role.name}">
+                <span th:case="'INSTRUCTOR'">Eğitmen</span>
+                <span th:case="'STUDENT'">Öğrenci</span>
+                <span th:case="'ADMIN'">Admin</span>
+                <span th:case="*">Bilinmiyor</span>
+            </span>
+        </p>
         <p><strong>Bölüm:</strong> <span th:text="${user.Department.name}"></span></p>
         <p><strong>Telefon:</strong> <span th:text="${user.phoneNumber}"></span></p>
         <div class="mt-4 text-end">

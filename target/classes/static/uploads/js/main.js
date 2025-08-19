@@ -25,20 +25,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function checkEmail() {
-    if (!selectedEmail.value || selectedEmail.value.trim() === '') {
-      emailError.style.display = 'block';
-      readonlyEmail.classList.add('input-error');
-      return false;
-    } else {
-      emailError.style.display = 'none';
-      readonlyEmail.classList.remove('input-error');
-      return true;
+    function checkEmail() {
+        if (!selectedEmail.value || selectedEmail.value.trim() === '') {
+            emailError.style.display = 'block';
+            readonlyEmail.classList.add('input-error');
+            return false;
+        } else {
+            emailError.style.display = 'none';
+            readonlyEmail.classList.remove('input-error');
+            return true;
+        }
     }
-  }
-
-  password.addEventListener('input', checkPasswords);
-  passwordConfirm.addEventListener('input', checkPasswords);
+    if (password && passwordConfirm) {
+        password.addEventListener('input', checkPasswords);
+        passwordConfirm.addEventListener('input', checkPasswords);
+    }
 
   if (form) {
     form.addEventListener('submit', function (e) {

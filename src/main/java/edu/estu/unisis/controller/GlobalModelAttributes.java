@@ -16,6 +16,7 @@ public class GlobalModelAttributes {
     @ModelAttribute
     public void injectSettings(Model model) {
         model.addAttribute("registrationOpen", settingService.isEnabled("registration_open"));
+        model.addAttribute("upcomingExamsEnabled", settingService.isEnabled("upcoming_exams_enabled"));
     }
 }
 

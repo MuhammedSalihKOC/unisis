@@ -50,7 +50,6 @@
         <div class="col-md-4">
             <span>Departman:</span>
             <select id="departmentFilter" class="form-select">
-                <option value="">Bilgisayar Mühendisliği</option>
                 <option th:each="dep : ${departments}"
                         th:value="${dep.id}"
                         th:text="${dep.name}">

@@ -78,7 +78,6 @@ public class GradeController {
             userGradeMap.put(userId, gradeMap);
         }
 
-        // Ağırlık toplamı ve hata bayrağı
         double weightTotal = examWeights.stream()
                 .map(CourseExamWeight::getWeightPercentage)
                 .filter(Objects::nonNull)
@@ -86,25 +85,22 @@ public class GradeController {
                 .sum();
 
         boolean weightsAreValid = Math.abs(weightTotal - 100.0) < 0.01;
-        boolean weightInvalid = !weightsAreValid; // template hata gösterirken bunu kullanacağız
+        boolean weightInvalid = !weightsAreValid;
 
         model.addAttribute("courseId", courseId);
         model.addAttribute("course", course);
         model.addAttribute("examTypes", examTypes);
         model.addAttribute("examWeights", examWeights);
-        model.addAttribute("examWeightsMap", examWeightsMap); // <-- kritik
+        model.addAttribute("examWeightsMap", examWeightsMap);
         model.addAttribute("userCourses", userCourses);
         model.addAttribute("userGradeMap", userGradeMap);
         model.addAttribute("weightedAverages", weightedAverages);
         model.addAttribute("letterGrades", letterGrades);
-
         model.addAttribute("weightTotal", weightTotal);
         model.addAttribute("weightInvalid", weightInvalid);
-
         model.addAttribute("pageTitle", "Notlar");
 
-        // Hangi template?
-        return "course/course-student-grade"; // <- dosya adın buysa bunu döndür
+        return "course/course-student";
     }
 
     @GetMapping("/{courseId}/duzenle")

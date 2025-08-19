@@ -12,8 +12,8 @@
 
             <div class="collapse navbar-collapse" id="navbarMenu">
                 <ul class="navbar-nav ms-auto">
-                    <th:block th:if="${session.loggedInUser != null}">
-                        <th:block th:if="${registrationOpen && session.loggedInUser.role.name == 'STUDENT'}">
+                    <th:block th:if="${session.loggedInUser != null and session.loggedInUser.role != null }">
+                        <th:block th:if="${#bools.isTrue(registrationOpen) && session.loggedInUser.role.name == 'STUDENT'}">
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{/dersler/kayit}">Ders Kayıt</a>
                             </li>

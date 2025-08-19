@@ -15,7 +15,7 @@
         <div class="row g-3">
             <div class="col-lg-6">
                 <div class="card h-100 shadow-lg">
-                    <img src="" class="card-img-top" alt="Favori Duyuru">
+                    <span>&nbsp;Favori Duyuru</span>
                     <div class="card-body">
                         <h5 class="card-title">Yeni Eğitim Dönemi Başladı</h5>
                         <p class="card-text">2025-2026 Akademik yılı ders kayıtları başladı. Detayları öğrenmek için tıklayın.</p>
@@ -29,7 +29,7 @@
                     <!-- Duyuru 2 -->
                     <div class="col-md-6">
                         <div class="card h-100">
-                            <img src="" class="card-img-top" alt="Duyuru 2">
+                            <span>&nbsp;Duyuru 2</span>
                             <div class="card-body">
                                 <h6 class="card-title">Mezuniyet Töreni Kayıtları Başladı</h6>
                                 <a href="/duyurular/2" class="btn btn-sm btn-outline-danger">Detay</a>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card h-100">
-                            <img src="" class="card-img-top" alt="Duyuru 3">
+                            <span>&nbsp;Duyuru 3</span>
                             <div class="card-body">
                                 <h6 class="card-title">Kütüphane Çalışma Saatleri Güncellendi</h6>
                                 <a href="/duyurular/3" class="btn btn-sm btn-outline-danger">Detay</a>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card h-100">
-                            <img src="" class="card-img-top" alt="Duyuru 4">
+                            <span>&nbsp;Duyuru 4</span>
                             <div class="card-body">
                                 <h6 class="card-title">Bahar Festivali Etkinlik Programı Açıklandı</h6>
                                 <a href="/duyurular/4" class="btn btn-sm btn-outline-danger">Detay</a>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card h-100">
-                            <img src="" class="card-img-top" alt="Duyuru 5">
+                            <span>&nbsp;Duyuru 5</span>
                             <div class="card-body">
                                 <h6 class="card-title">Staj Başvuruları İçin Son Gün 30 Mart</h6>
                                 <a href="/duyurular/5" class="btn btn-sm btn-outline-danger">Detay</a>
@@ -90,23 +90,26 @@
         </div>
     </section>
 
-    <section class="container my-5">
+    <section th:if="${#bools.isTrue(upcomingExamsEnabled)}" class="container my-5">
         <h2 class="text-center mb-4">Yaklaşan Sınavlar</h2>
         <table class="table table-striped text-center">
             <thead>
             <tr>
                 <th>Ders</th>
-                <th>Tarih</th>
-                <th>Saat</th>
+                <th>Tarih ve Saat</th>
+                <th>Yer</th>
                 <th>Sınav Türü</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="sinav : ${sinavlar}">
-                <td th:text="${sinav.course.name}"></td>
-                <td th:text="${#temporals.format(sinav.date, 'dd MMM yyyy')}"></td>
-                <td th:text="${sinav.time}"></td>
-                <td th:text="${sinav.type}"></td>
+            <tr th:each="ex : ${nearestDayExams}">
+                <td th:text="${ex.course.name}"></td>
+                <td>
+                    <span th:text="${#temporals.format(ex.examDatetime, 'dd.MM.yyyy')}">Tarih</span>
+                    <span  th:text="${#temporals.format(ex.examDatetime, 'HH:mm')}">Saat</span>
+                </td>
+                <td th:text="${ex.location}"></td>
+                <td th:text="${ex.examType.name}"></td>
             </tr>
             </tbody>
         </table>

@@ -1,8 +1,10 @@
 package edu.estu.unisis.controller;
 
 import edu.estu.unisis.model.Course;
+import edu.estu.unisis.model.Department;
 import edu.estu.unisis.model.User;
 import edu.estu.unisis.service.CourseService;
+import edu.estu.unisis.service.DepartmentService;
 import edu.estu.unisis.service.UserCourseService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -19,10 +21,12 @@ public class UserCourseController {
 
     private final UserCourseService userCourseService;
     private final CourseService courseService;
+    private final DepartmentService departmentService;
 
-    public UserCourseController(UserCourseService userCourseService, CourseService courseService) {
+    public UserCourseController(UserCourseService userCourseService, CourseService courseService, DepartmentService departmentService) {
         this.userCourseService = userCourseService;
         this.courseService = courseService;
+        this.departmentService = departmentService;
     }
 
     @GetMapping("/derslerim")
@@ -52,11 +56,13 @@ public class UserCourseController {
                 .map(Course::getId)
                 .collect(Collectors.toList());
         int totalCredits = userCourseService.getTotalCredits(userId);
+        Department department = departmentService.getDepartmentById(departmentId);
 
         model.addAttribute("allCourses", allCourses);
         model.addAttribute("registeredCourseIds", registeredCourseIds);
         model.addAttribute("registeredCourses", registeredCourses);
         model.addAttribute("totalCredits", totalCredits);
+        model.addAttribute("departments", department);
         model.addAttribute("pageTitle", "Ders Kayıt");
         return "course/course-register";
     }
