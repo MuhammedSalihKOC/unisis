@@ -4,9 +4,13 @@ import edu.estu.unisis.model.Exam;
 import edu.estu.unisis.repository.ExamRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +67,36 @@ public class ExamManager implements ExamService {
     public boolean existsByCourseAndType(Long courseId, Long examTypeId) {
         return examRepository.existsByCourseAndExamType(courseId, examTypeId);
     }
+    @Override
+    public List<Exam> getNearestExamDayExams() {
+        LocalDateTime now = LocalDateTime.now();
 
+        var firstPage = examRepository
+                .findByExamDatetimeAfterOrderByExamDatetimeAsc(now, PageRequest.of(0, 1));
+
+        if (firstPage.isEmpty()) {
+            return List.of();
+        }
+
+        Exam nearest = firstPage.getContent().get(0);
+        LocalDate day = nearest.getExamDatetime().toLocalDate();
+
+        LocalDateTime start = day.atStartOfDay();
+        LocalDateTime endExclusive = day.plusDays(1).atStartOfDay(); // [start, end)
+
+        return examRepository.findByExamDatetimeBetweenOrderByExamDatetimeAsc(start, endExclusive.minusNanos(1));
+    }
+    public List<Exam> getExamsForEarliestUpcomingDay() {
+        LocalDateTime now = LocalDateTime.now();
+        Exam first = examRepository.findFirstByExamDatetimeAfterOrderByExamDatetimeAsc(now);
+        if (first == null) {
+            return Collections.emptyList();
+        }
+        LocalDate targetDate = first.getExamDatetime().toLocalDate();
+        LocalDateTime startOfDay = targetDate.atStartOfDay();
+        LocalDateTime endOfDay = targetDate.atTime(LocalTime.MAX);
+
+        return examRepository.findByExamDatetimeBetweenOrderByExamDatetimeAsc(startOfDay, endOfDay);
+    }
 
 }

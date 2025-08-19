@@ -329,10 +329,10 @@ public class AdminController {
                 "club_announcements_open", "Kulüp Duyuruları",
                 "maintenance_mode", "Bakım Modu",
                 "event_registration_enabled", "Etkinlik Kaydı",
-                "profile_edit_allowed", "Profil Düzenleme",
                 "exam_schedule_visible", "Sınav Takvimi",
                 "show_home_slider", "Anasayfa Slaytı",
-                "enable_notifications", "Sistem Bildirimleri"
+                "upcoming_exams_enabled", "Yaklaşan Sınavlar (Ana Sayfa)"
+
         ));
         return "home/panel";
     }

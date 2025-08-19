@@ -16,4 +16,6 @@ public interface ExamService {
     List<Exam> getByCourse(Long courseId);
     List<Exam> getByDepartment(Long departmentId);
     boolean existsByCourseAndType(Long courseId, Long examTypeId);
+    public List<Exam> getNearestExamDayExams();
+    public List<Exam> getExamsForEarliestUpcomingDay();
 }

@@ -190,3 +190,24 @@ aside.sidebar .nav .nav-item .nav-link:hover {
 .highlight {
   background-color: #f8d7da;
 }
+.panel-header {
+    background-color: #7b1e1e; /* bordo ton */
+    color: #fff;
+}
+
+.save-btn {
+    background-color: #b02a37;
+    border: none;
+}
+
+.save-btn:hover {
+    background-color: #8e1e2a;
+}
+
+.card {
+    border-color: #b02a37;
+}
+
+.form-label {
+    font-weight: 500;
+}
