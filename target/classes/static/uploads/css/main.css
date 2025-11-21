@@ -136,3 +136,43 @@ a {
 .highlight {
   background-color: #f8d7da;
 }
+
+@media (max-width: 991.98px) {
+  .navbar {
+    height: 75px;
+  }
+  .navbar .navbar-collapse {
+    position: absolute;
+    top: 75px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: #8C373E;
+    padding: 10px 1rem;
+    z-index: 9998;
+  }
+  .navbar .navbar-collapse .navbar-nav {
+    display: block;
+  }
+  .navbar .nav-item {
+    display: block;
+  }
+  .navbar .nav-link {
+    color: #fff !important;
+    padding: 8px 0;
+  }
+}
+
+@media (max-width: 440px) {
+  .logo {
+    margin-left: 8px;
+    height: 48px;
+    max-width: 140px;
+  }
+  .navbar {
+    height: 75px;
+  }
+  .navbar .navbar-brand {
+    padding-left: 0.25rem;
+  }
+}
